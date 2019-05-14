@@ -148,8 +148,9 @@ public:
         else toDelete->parent->weightRight--;
 
         Node* balancingPoint = NULL;
-        if (toDelete->weightRight > toDelete->weightLeft)
+        if (toDelete->weightRight > toDelete->weightLeft) // right-heavy
         {
+            toDelete->right->parent = toDelete->parent;
             if (leftChild)
             {
                 toDelete->parent->left = toDelete->right;
@@ -159,8 +160,9 @@ public:
                 toDelete->parent->right = toDelete->right;
                 balancingPoint = toDelete->parent->right->hangNodes(toDelete->left);
             }
-        }else
+        }else                                             // left-heavy
         {
+            toDelete->left->parent = toDelete->parent;
             if (leftChild)
             {
                 toDelete->parent->left = toDelete->left;
@@ -168,7 +170,7 @@ public:
             } else
             {
                 toDelete->parent->right = toDelete->left;
-                balancingPoint = toDelete->parent->right->hangNodes(toDelete->left);
+                balancingPoint = toDelete->parent->right->hangNodes(toDelete->right);
             }
         }
 
