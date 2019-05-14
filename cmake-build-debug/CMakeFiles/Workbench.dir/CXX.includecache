@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/slava/MegaTreeProject/Workbench/BST.h
+vector
+-
+string
+-
+iostream
+-
+
+/home/slava/MegaTreeProject/Workbench/main.cpp
+iostream
+-
+BST.h
+/home/slava/MegaTreeProject/Workbench/BST.h
+
