@@ -24,8 +24,8 @@ class Node
 {
     bool empty;
     T value_;
-    int leftWeight;
-    int rightWeight;
+    int weightLeft;
+    int weightRight;
     Node* parent;
 
 public:
@@ -33,7 +33,7 @@ public:
     Node* left;
     Node* right;
 
-    explicit Node(const T& value, Node * parent) : empty(false), value_(value), leftWeight(0), rightWeight(0), parent(parent), left(NULL), right(NULL) {} //new node
+    explicit Node(const T& value, Node * parent) : empty(false), value_(value), weightLeft(0), weightRight(0), parent(parent), left(NULL), right(NULL) {} //new node
 
     Node() {empty = true; left = NULL; right = NULL; parent = NULL;} // root creation
 
@@ -44,8 +44,8 @@ public:
         this->right = original.right;
 
         this->parent = original.parent;
-        this->leftWeight = original.leftWeight;
-        this->rightWeight = original.rightWeight;
+        this->weightLeft = original.weightLeft;
+        this->weightRight = original.weightRight;
     }
 
     Node* addNode(const T& value)
@@ -57,7 +57,7 @@ public:
             if (right == NULL)
             {
                 right = new Node(value, this);
-                // ++rightWeight;
+                // ++weightRight;
                 return this; //this node has just gave birth to a child
             }
             else return right->addNode(value);
@@ -67,13 +67,29 @@ public:
             if(left==NULL)
             {
                 left = new Node(value, this);
-                // ++leftWeight;
+                // ++weightLeft;
                 return this; //this node has just gave birth to a child
             }
             else return left->addNode(value);
         }
     }
 
+    Node* hangNodes(Node * migrant)
+    {
+        if (migrant->value_ > this->value)
+        {
+            this->weightRight++;
+            if(this->right == NULL) this->right = migrant;
+            else this->right->hangNodes(migrant);
+        }
+        else
+        {
+            this->weightLeft++;
+            if(this->left == NULL) this->left = migrant;
+            else this->left->hangNodes(migrant);
+        }
+    }
+    
     void rm(const T& value)
     {
         Node *_toDelete = this->findNode(value);
