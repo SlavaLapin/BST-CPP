@@ -48,6 +48,18 @@ public:
         this->weightRight = original.weightRight;
     }
 
+    Node operator=(const Node& original)
+    {
+        this->value_ = original.value_;
+        this->left = original.left;
+        this->right = original.right;
+        this->weightLeft = original.weightLeft;
+        this->weightRight = original.weightRight;
+        this->parent = original.parent;
+        this->empty = original.empty;
+        return *this;
+    }
+
     Node* addNode(const T& value)
     {
         if(empty) {value_ = value; empty = false; return this;} // root. for now
@@ -76,25 +88,94 @@ public:
 
     Node* hangNodes(Node * migrant)
     {
-        if (migrant->value_ > this->value)
+        if (migrant->value_ > this->value_)
         {
-            this->weightRight++;
-            if(this->right == NULL) this->right = migrant;
-            else this->right->hangNodes(migrant);
-        }
-        else
+            this->weightRight+=migrant->weightLeft;
+            this->weightRight+=migrant->weightRight;
+            if(this->right == NULL)
+            {
+                this->right = migrant;
+                migrant->parent = this;
+                return this;
+            }else
+            {
+                return this->right->hangNodes(migrant);
+            }
+        }else
         {
-            this->weightLeft++;
-            if(this->left == NULL) this->left = migrant;
-            else this->left->hangNodes(migrant);
+            this->weightLeft+=weightLeft;
+            this->weightLeft+=weightRight;
+            if(this->left == NULL)
+            {
+                this->left = migrant;
+                migrant->parent = this;
+                return this;
+            }else
+            {
+                return this->left->hangNodes(migrant);
+            }
         }
     }
     
     void rm(const T& value)
     {
-        Node *_toDelete = this->findNode(value);
+        Node *toDelete = this->findNode(value);
+        if(toDelete == NULL) return;
 
-        cout<<"mock-up";
+        if (toDelete->parent == NULL) // sudo rm / (Deleting root)
+        {
+            Node * tmp = toDelete;
+            if (toDelete->weightRight > toDelete->weightLeft)
+            {
+                *toDelete = *(tmp->right);
+                toDelete->hangNodes(tmp->left);
+            }else
+            {
+                *toDelete = *(tmp->left);
+                toDelete->hangNodes(tmp->right);
+            }
+            tmp->left = NULL;
+            tmp->right = NULL;
+            delete tmp;
+            toDelete->balance();
+            return;
+        }
+
+        bool leftChild = false;
+        if (toDelete->parent->left == toDelete) leftChild = true;
+
+        if (leftChild) toDelete->parent->weightLeft--;
+        else toDelete->parent->weightRight--;
+
+        Node* balancingPoint = NULL;
+        if (toDelete->weightRight > toDelete->weightLeft)
+        {
+            if (leftChild)
+            {
+                toDelete->parent->left = toDelete->right;
+                balancingPoint = toDelete->parent->left->hangNodes(toDelete->left);
+            } else
+            {
+                toDelete->parent->right = toDelete->right;
+                balancingPoint = toDelete->parent->right->hangNodes(toDelete->left);
+            }
+        }else
+        {
+            if (leftChild)
+            {
+                toDelete->parent->left = toDelete->left;
+                balancingPoint = toDelete->parent->left->hangNodes(toDelete->right);
+            } else
+            {
+                toDelete->parent->right = toDelete->left;
+                balancingPoint = toDelete->parent->right->hangNodes(toDelete->left);
+            }
+        }
+
+        toDelete->left = NULL;
+        toDelete->right = NULL;
+        delete toDelete;
+        if (balancingPoint != NULL) balancingPoint->balance();
     }
 
     Node* findNode(const T& value)
@@ -141,6 +222,12 @@ public:
             default:
                 cout<<"Print mode not specified"<<endl;
         }
+    }
+
+    void balance()
+    {
+        cout<<"Just pretending for now, value: "<<this->value_<<endl;
+        if (this->parent != NULL) this->parent->balance();
     }
 };
 
