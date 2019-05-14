@@ -66,16 +66,17 @@ public:
         if (value == value_) return NULL;
         if (value > value_)
         {
+            this->weightRight++;
             if (right == NULL)
             {
                 right = new Node(value, this);
-                // ++weightRight;
                 return this; //this node has just gave birth to a child
             }
             else return right->addNode(value);
         }
         else
         {
+            this->weightLeft++;
             if(left==NULL)
             {
                 left = new Node(value, this);
@@ -124,19 +125,23 @@ public:
 
         if (toDelete->parent == NULL) // sudo rm / (Deleting root)
         {
-            Node * tmp = toDelete;
+            Node tmp = *toDelete;
+            if ((toDelete->weightRight == 0) && (toDelete->weightLeft == 0)) // Deleting a lonely root
+            {
+                this->value_ = 0;
+                this->empty = true;
+                return;
+            }
             if (toDelete->weightRight > toDelete->weightLeft)
             {
-                *toDelete = *(tmp->right);
-                toDelete->hangNodes(tmp->left);
+                *toDelete = *(tmp.right);
+                toDelete->hangNodes(tmp.left);
             }else
             {
-                *toDelete = *(tmp->left);
-                toDelete->hangNodes(tmp->right);
+                *toDelete = *(tmp.left);
+                toDelete->hangNodes(tmp.right);
             }
-            tmp->left = NULL;
-            tmp->right = NULL;
-            delete tmp;
+            toDelete->parent = NULL;
             toDelete->balance();
             return;
         }
@@ -228,7 +233,9 @@ public:
 
     void balance()
     {
+        int nothing;
         cout<<"Just pretending for now, value: "<<this->value_<<endl;
+        cin>>nothing;
         if (this->parent != NULL) this->parent->balance();
     }
 };
