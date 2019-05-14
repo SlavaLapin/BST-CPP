@@ -48,7 +48,7 @@ public:
         this->weightRight = original.weightRight;
     }
 
-    Node operator=(const Node& original)
+    Node& operator=(const Node& original)
     {
         this->value_ = original.value_;
         this->left = original.left;
