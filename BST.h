@@ -28,10 +28,26 @@ class Node
     int weightRight;
     Node* parent;
 
+    void _parentWeightDecrease()
+    {
+        if (this->parent == NULL) return; // reached root
+
+        if (this->parent->left == this) this->parent->weightLeft--;
+        else this->parent->weightRight--;
+
+        this->parent->_parentWeightDecrease();
+    }
+
 public:
 
     Node* left;
     Node* right;
+
+    ~Node()
+    {
+        delete this->left;
+        delete this->right;
+    }
 
     explicit Node(const T& value, Node * parent) : empty(false), value_(value), weightLeft(0), weightRight(0), parent(parent), left(NULL), right(NULL) {} //new node
 
@@ -123,7 +139,7 @@ public:
         Node *toDelete = this->findNode(value);
         if(toDelete == NULL) return;
 
-        if (toDelete->parent == NULL) // sudo rm / (Deleting root)
+        if (toDelete->parent == NULL) // sudo rm / (Deleting  a root with children)
         {
             Node tmp = *toDelete;
             if ((toDelete->weightRight == 0) && (toDelete->weightLeft == 0)) // Deleting a lonely root
@@ -146,13 +162,29 @@ public:
             return;
         }
 
+        // not root
         bool leftChild = false;
         if (toDelete->parent->left == toDelete) leftChild = true;
 
-        if (leftChild) toDelete->parent->weightLeft--;
-        else toDelete->parent->weightRight--;
+        toDelete->_parentWeightDecrease();
 
         Node* balancingPoint = NULL;
+
+        if ((toDelete->weightRight == 0) && (toDelete->weightLeft == 0)) // leaf
+        {
+            if (leftChild)
+            {
+                toDelete->parent->left == NULL;
+            }
+            if(!leftChild)
+            {
+                toDelete->parent->right == NULL;
+            }
+            delete toDelete;
+            return;
+        }
+
+        // has children
         if (toDelete->weightRight > toDelete->weightLeft) // right-heavy
         {
             toDelete->right->parent = toDelete->parent;
@@ -165,7 +197,7 @@ public:
                 toDelete->parent->right = toDelete->right;
                 balancingPoint = toDelete->parent->right->hangNodes(toDelete->left);
             }
-        }else                                             // left-heavy
+        }else                                             // left-heavy or BALANCED (default)
         {
             toDelete->left->parent = toDelete->parent;
             if (leftChild)
@@ -202,8 +234,17 @@ public:
 
     bool doesNodeExist(const T& value)
     {
-        if ((this->findNode(value)) == NULL) return false;
-        else return true;
+        Node * n = this->findNode(value);
+        if (n == NULL)
+        {
+            cout<<"This value is not contained in the tree!"<<endl;
+            return false;
+        }
+        else
+        {
+            cout<<"Value: "<<n->value_<<", wl: "<<n->weightLeft<<", wr: "<<n->weightRight<<", parent: "<<n->parent<<", empty:"<<n->empty<<endl;
+            return true;
+        }
     }
 
     void print(const char& mode) // l - leftside, r - rightside, c - center
@@ -234,7 +275,7 @@ public:
     void balance()
     {
         int nothing;
-        cout<<"Just pretending for now, value: "<<this->value_<<endl;
+        cout<<"Just pretending for now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
         cin>>nothing;
         if (this->parent != NULL) this->parent->balance();
     }
