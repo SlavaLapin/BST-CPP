@@ -291,6 +291,64 @@ public:
         cin>>nothing;
         if (this->parent != NULL) this->parent->balance();
     }
+
+    void leftTurn(){}
+
+    void rightTurn(){}
+
+    TreeData<T> * survey()
+    {
+        int size = weightLeft + weightRight +1;
+        auto * allNodes = new NodeData<T>[size];
+        int count = -1;
+        int * counter = &count;
+        this->submitData(allNodes, counter, 0, -1, false);
+
+        return new TreeData<T>(allNodes, size);
+    }
+
+    void submitData(NodeData<T> * allNodes, int * counter, int myLevel, int myParent, bool amILeft)
+    {
+        ++(*counter);
+        allNodes[*counter] = new NodeData<T>(value_, *counter, myParent, amILeft);
+        int myId = *counter;
+
+        if (left != NULL)
+        {
+            left->submitData(allNodes, counter, myLevel+1, myId, true);
+        }
+        if(right != NULL)
+        {
+            right->submitData(allNodes, *counter, myLevel+1, myId, false);
+        }
+    }
+
+    void drawTree()
+    {
+        auto data = this->survey();
+        // call graphics functions later, but today
+        cout<<"_*+*+*+*+*+*_TREE_*+*+*+*+*+*_"<<endl;
+        cout<<"Total: "<<data->nodeCount<<endl;
+        cout<<"Levels: "<<data->levels<<" (Largest row consists of "<<data->mostNodesOnLevel<<" nodes)"<<endl;
+
+        for (int i = 0; i < data->levels; ++i)
+        {
+            cout<<"  [ ";
+            NodeData<T> * lvl_ptr = data->nodeDataArray[i];
+            for(int j = 0; j < data->nodesByLevel[i]; ++j)
+            {
+                NodeData<T> elem = lvl_ptr[j];
+                cout<<"(ID: "<<elem.id;
+                cout<<" V: "<<elem.value;
+                cout<<" PID: "<<elem.parentId;
+                cout<<" LEV: "<<elem.level;
+                cout<<" R: "<<!(elem.leftChild)<< ")";
+            }
+            cout<<" ]"<<endl;
+        }
+
+        cout<<"_*+*+*+*+_END_OF_TREE_+*+*+*+*_";
+    }
 };
 
 #endif //WORKBENCH_BST_H

@@ -14,6 +14,9 @@ struct NodeData{
     bool leftChild;
 
     int level;
+
+    NodeData(T val, int id, int parent, bool left, int level):
+    value(val), id(id), parentId(parent), leftChild(left), level(level) {}
 };
 
 template <class T>
