@@ -299,7 +299,7 @@ public:
     TreeData<T> * survey()
     {
         int size = weightLeft + weightRight +1;
-        auto * allNodes = new NodeData<T>[size];
+        NodeData<T> * allNodes = new NodeData<T> [size];
         int count = -1;
         int * counter = &count;
         this->submitData(allNodes, counter, 0, -1, false);
@@ -310,7 +310,7 @@ public:
     void submitData(NodeData<T> * allNodes, int * counter, int myLevel, int myParent, bool amILeft)
     {
         ++(*counter);
-        allNodes[*counter] = new NodeData<T>(value_, *counter, myParent, amILeft);
+        allNodes[*counter] = NodeData<T>(value_, *counter, myParent, amILeft, myLevel);
         int myId = *counter;
 
         if (left != NULL)
@@ -319,7 +319,7 @@ public:
         }
         if(right != NULL)
         {
-            right->submitData(allNodes, *counter, myLevel+1, myId, false);
+            right->submitData(allNodes, counter, myLevel+1, myId, false);
         }
     }
 

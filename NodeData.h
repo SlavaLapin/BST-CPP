@@ -15,8 +15,21 @@ struct NodeData{
 
     int level;
 
+    NodeData():
+    value(-1), id(-1), parentId(-1), leftChild(false), level(-1) {};
+
     NodeData(T val, int id, int parent, bool left, int level):
-    value(val), id(id), parentId(parent), leftChild(left), level(level) {}
+    value(val), id(id), parentId(parent), leftChild(left), level(level) {};
+
+    NodeData &operator=(NodeData<T> const & original)
+    {
+        this->value=original.value;
+        this->id=original.id;
+        this->parentId=original.parentId;
+        this->leftChild=original.leftChild;
+        this->level=original.level;
+        return *this;
+    }
 };
 
 template <class T>

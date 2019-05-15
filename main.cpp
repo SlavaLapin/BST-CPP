@@ -33,6 +33,8 @@ int main() {
     root->addNode(9);
     root->addNode(7);
 
+    root->drawTree();
+
     while(input != -1)
     {
         input = menu();
