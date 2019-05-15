@@ -22,6 +22,17 @@ int menu()
 int main() {
     int input = 0;
     Node<int>* root = new Node<int>;
+
+    root->addNode(2);
+    root->addNode(5);
+    root->addNode(4);
+    root->addNode(1);
+    root->addNode(6);
+    root->addNode(10);
+    root->addNode(8);
+    root->addNode(9);
+    root->addNode(7);
+
     while(input != -1)
     {
         input = menu();
