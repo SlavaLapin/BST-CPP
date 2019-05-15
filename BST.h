@@ -141,21 +141,29 @@ public:
 
         if (toDelete->parent == NULL) // sudo rm / (Deleting  a root with children)
         {
-            Node tmp = *toDelete;
             if ((toDelete->weightRight == 0) && (toDelete->weightLeft == 0)) // Deleting a lonely root
             {
                 this->value_ = 0;
                 this->empty = true;
                 return;
             }
+
+            Node * rl = toDelete->left;
+            Node * rr = toDelete->right;
             if (toDelete->weightRight > toDelete->weightLeft)
             {
-                *toDelete = *(tmp.right);
-                toDelete->hangNodes(tmp.left);
+                *toDelete = *(rr);
+                toDelete->hangNodes(rl);
+                rr->right = NULL;
+                rr->left = NULL;
+                delete rr;
             }else
             {
-                *toDelete = *(tmp.left);
-                toDelete->hangNodes(tmp.right);
+                *toDelete = *(rl);
+                toDelete->hangNodes(rr);
+                rl->right = NULL;
+                rl->left = NULL;
+                delete rl;
             }
             toDelete->parent = NULL;
             toDelete->balance();
