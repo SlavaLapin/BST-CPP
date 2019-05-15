@@ -105,10 +105,10 @@ public:
 
     Node* hangNodes(Node * migrant)
     {
-        if (migrant->value_ > this->value_)
+        if (migrant->value_ > this->value_) // to be hanged on the right
         {
             this->weightRight+=migrant->weightLeft;
-            this->weightRight+=migrant->weightRight;
+            this->weightRight+=migrant->weightRight+1;
             if(this->right == NULL)
             {
                 this->right = migrant;
@@ -120,8 +120,8 @@ public:
             }
         }else
         {
-            this->weightLeft+=weightLeft;
-            this->weightLeft+=weightRight;
+            this->weightLeft+=migrant->weightLeft;
+            this->weightLeft+=migrant->weightRight+1;
             if(this->left == NULL)
             {
                 this->left = migrant;
