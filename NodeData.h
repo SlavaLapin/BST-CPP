@@ -44,9 +44,10 @@ struct TreeData{
     {
         nodeCount = total;
         levels = _findMaxLevel(list);
-        nodesByLevel = _countByLevel(list, nodeCount, levels);
-        mostNodesOnLevel = _findLargestRow(nodesByLevel, levels);
+        nodesByLevel = _countByLevel(list);
+        mostNodesOnLevel = _findLargestRow();
         nodeDataArray = _orderByLevel(list);
+        delete [] list;
     }
 
     ~TreeData()
@@ -79,6 +80,8 @@ private:
         {
             countByLevel[list[i].level]++;
         }
+
+        return countByLevel;
     }
 
     int _findLargestRow()
@@ -93,7 +96,7 @@ private:
 
     NodeData<T> ** _orderByLevel(NodeData<T> * list)
     {
-        auto ** nodeRows = new NodeData<T> * [levels];
+        NodeData<T> ** nodeRows = new NodeData<T> * [levels];
         for(int i = 0; i < levels; ++i)
         {
             nodeRows[i] = new NodeData<T> [nodesByLevel[i]];
@@ -106,8 +109,9 @@ private:
         }
         for(int i = 0; i < nodeCount; ++i)
         {
-            nodeRows[list[i].level][rowCounter[list[i].level]]++;
-            rowCounter[list[i].level]++;
+            NodeData<T> & tmp = list[i];
+            nodeRows[tmp.level][rowCounter[tmp.level]]=NodeData<T>(tmp.value, tmp.id, tmp.parentId, tmp.leftChild, tmp.level);
+            rowCounter[tmp.level]++;
         }
 
         return nodeRows;
