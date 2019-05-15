@@ -16,6 +16,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "NodeData.h"
 
 using namespace std;
 
