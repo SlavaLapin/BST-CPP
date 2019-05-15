@@ -250,7 +250,10 @@ public:
         }
         else
         {
-            cout<<"Value: "<<n->value_<<", wl: "<<n->weightLeft<<", wr: "<<n->weightRight<<", parent: "<<n->parent<<", empty:"<<n->empty<<endl;
+            cout<<"Value: "<<n->value_<<", wl: "<<n->weightLeft<<", wr: "<<n->weightRight<<", parent: ";
+            if (n->parent != NULL) cout << n->parent->value_;
+            else cout << "None";
+            cout << ", empty:"<<n->empty<<endl;
             return true;
         }
     }
