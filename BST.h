@@ -174,11 +174,11 @@ public:
         {
             if (leftChild)
             {
-                toDelete->parent->left == NULL;
+                toDelete->parent->left = NULL;
             }
-            if(!leftChild)
+            else
             {
-                toDelete->parent->right == NULL;
+                toDelete->parent->right = NULL;
             }
             delete toDelete;
             return;
