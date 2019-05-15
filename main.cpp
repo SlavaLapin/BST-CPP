@@ -21,7 +21,7 @@ int menu()
 
 int main() {
     int input = 0;
-    Node<int>* root = new Node<int>;
+    auto* root = new Node<int>;
 
     root->addNode(2);
     root->addNode(5);
@@ -64,6 +64,9 @@ int main() {
                 cin>>c;
                 root->print(c);
                 cout<<"Done!";
+                break;
+            default:
+                cout<<endl;
         }
     }
     return 0;
