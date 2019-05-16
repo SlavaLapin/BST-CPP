@@ -70,7 +70,7 @@ private:
         {
             if (list[i].level > maxLevel) maxLevel = list[i].level;
         }
-        return maxLevel;
+        return maxLevel+1;
     }
 
     int * _countByLevel(NodeData<T> * list)
