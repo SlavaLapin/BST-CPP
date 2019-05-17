@@ -41,7 +41,7 @@ NodeSVG ** createRow(TreeData<T> * data, int rowLevel)
 
     for (int i =  0; i < data->nodesByLevel[data->levels-1]; i++)
     {
-        Point bottomLeftCorner = Point( (gapHorForRow*(i+1)+BLOCK_WIDTH*i), (VERTICAL_GAP * (data->levels - rowLevel) + BLOCK_HEIGHT * (data->levels - rowLevel - 1)) );
+        Point bottomLeftCorner = Point( (gapHorForRow*(i+1)+BLOCK_WIDTH*i), (100 + VERTICAL_GAP * (data->levels - rowLevel) + BLOCK_HEIGHT * (data->levels - rowLevel - 1)) );
         row[i] = new NodeSVG(bottomLeftCorner, data->nodeDataArray[rowLevel][i]);
     }
 
