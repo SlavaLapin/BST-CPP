@@ -321,10 +321,8 @@ public:
         }
     }
 
-    void drawTree()
+    void drawTreeDEBUG(TreeData<T> * data)
     {
-        auto data = this->survey();
-        // call graphics functions later, but today
         cout<<"_*+*+*+*+*+*_TREE_*+*+*+*+*+*_"<<endl;
         cout<<"Total: "<<data->nodeCount<<endl;
         cout<<"Levels: "<<data->levels<<" (Largest row consists of "<<data->mostNodesOnLevel<<" nodes)"<<endl;
@@ -346,6 +344,13 @@ public:
         }
 
         cout<<"_*+*+*+*+_END_OF_TREE_+*+*+*+*_";
+    }
+
+    void drawTree()
+    {
+        auto data = this->survey();
+        // call graphics functions later, but today
+        drawTreeDEBUG(data);
     }
 };
 

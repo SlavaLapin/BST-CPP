@@ -10,9 +10,12 @@ int MINIMAL_GAP;
 int VERTICAL_GAP;
 int BLOCK_HEIGHT;
 int BLOCK_WIDTH;
+int PADDING_X;
+int PADDING_Y;
+int FONT_SIZE = 14;
 
 template<class type>
-inline std::string to_string( const type & value)
+inline std::string to_string(const type & value)
 {
     std::ostringstream streamOut;
     streamOut << value;
@@ -25,12 +28,9 @@ struct NodeSVG
         Point origin;
         string valueStr;
         int parentId;
+        bool leftChild;
 
-        NodeSVG(Point origin, NodeData<T> const * node): id(node->id), origin(origin)
-        {
-            valueStr = to_string(node->value);
-            parentId = node->parentId;
-        }
+        NodeSVG(Point origin, NodeData<T> const * node): id(node->id), origin(origin), valueStr(to_string(node->value)), parentId(node->parentID), leftChild(node->leftChild) {}
 };
 
 NodeSVG ** createRow(TreeData<T> * data, int rowLevel)
@@ -48,16 +48,51 @@ NodeSVG ** createRow(TreeData<T> * data, int rowLevel)
     return row;
 }
 
-void DrawConnections(NodeSVG ** row, NodeSVG ** above, int rowLen, int aboveLen)
+void deleteRow(NodeSVG ** row, int len)
 {
-    // a line for each block of row
-    // between the center of it and the center of its parent
+    for (int j = 0; j < len; j++)
+    {
+        delete row[j];
+    }
+    delete [] row;
+}
+
+Point& getParentOrigin(NodeSVG * child, NodeSVG ** above, int aboveLen)
+{
+    for (int i = 0; i < aboveLen; ++i)
+    {
+        if(child->parentId == above[i]->id)
+        {
+            return above[i]->origin;
+        }
+    }
+    std::cout<<"failed finding parent: "<<child->parentId;
+    return Point(0, 0);
+}
+
+void DrawConnections(Document doc, NodeSVG ** row, NodeSVG ** above, int rowLen, int aboveLen)
+{
+    for (int i = 0; i < rowLen; ++i)
+    {
+        Point a = row[i]->origin;
+        a.x += BLOCK_WIDTH / 2;
+        a.x += BLOCK_HEIGHT;
+        Point b = getParentOrigin(row[i], above, aboveLen);
+        b.x += BLOCK_WIDTH / 2;
+
+        Polygon line(Stroke(10, (row[i]->leftChild ? Color::Blue : Color::Red)));
+        border << a << b;
+        doc << line;
+    }
 };
 
-void DrawRow(NodeSVG ** row, int rowLen)
+void DrawRow(Document doc, NodeSVG ** row, int rowLen)
 {
-        // for each nodeSVG draw a block there
-        // fill it with value
+    for (int i = 0; i < len; ++i)
+    {
+        doc << Rectangle(row[i]->origin, BLOCK_WIDTH, BLOCK_HEIGHT, Color::White);
+        doc << Text(row[i]->origin, row[i]->valueStr, Color::Black, Font(FONT_SIZE, "Verdana")).offset(PADDING_X, PADDING_Y);
+    }
         //maybe a border
 };
 
@@ -74,7 +109,6 @@ void drawTreeSVG(TreeData<T> * data)
 
     // create a row of ** data
     NodeSVG ** above = NULL;
-
     int rowLevel = data->levels-1; // last level
     NodeSVG ** row = createRow(data, rowLevel); // enough pointers to pointers for all nodes of last row
 
@@ -83,25 +117,17 @@ void drawTreeSVG(TreeData<T> * data)
         if ((i - 1) >= 0)
         {
             above = createRow(data, i-1);
-            drawConnections(row, above, data->nodesByLevel[i], data->nodesByLevel[i-1]);
+            drawConnections(doc, row, above, data->nodesByLevel[i], data->nodesByLevel[i-1]);
         }
-        drawRow(row, data->nodesByLevel[i]);
+        drawRow(doc, row, data->nodesByLevel[i]);
 
-        for (int j = 0; j < data->nodesByLevel[i]; j++)
-        {
-            delete row[j];
-        }
-        delete [] row;
+        deleteRow(row, data->nodesByLevel[i]);
         row = above;
     }
 
-    for (int j = 0; j < data->nodesByLevel[0]; ++j)
-    {
-        delete above[j];
-    }
-    delete [] above;
+    deleteRow(row, 1); // top row always consists of 1 node
 
-    //this has to be a separate function
+    doc.save();
 
 }
 
