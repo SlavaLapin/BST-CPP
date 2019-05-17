@@ -1,8 +1,110 @@
+#include <string>
+#include <sstream>
 #include "simple_svg_1.0.0.hpp"
-
+#include "NodeData.h"
 using namespace svg;
 
 // Demo page shows sample usage of the Simple SVG library.
+
+int MINIMAL_GAP;
+int VERTICAL_GAP;
+int BLOCK_HEIGHT;
+int BLOCK_WIDTH;
+
+template<class type>
+inline std::string to_string( const type & value)
+{
+    std::ostringstream streamOut;
+    streamOut << value;
+    return streamOut.str();
+}
+
+struct NodeSVG
+{
+        int id;
+        Point origin;
+        string valueStr;
+        int parentId;
+
+        NodeSVG(Point origin, NodeData<T> const * node): id(node->id), origin(origin)
+        {
+            valueStr = to_string(node->value);
+            parentId = node->parentId;
+        }
+};
+
+NodeSVG ** createRow(TreeData<T> * data, int rowLevel)
+{
+    int rowNodes = data->nodesByLevel[rowLevel];
+    NodeSVG ** row = new * NodeSVG[data->nodesByLevel[rowLevel]];
+    int gapHorForRow = (width - BLOCK_WIDTH * rowNodes) / (rowNodes + 1);
+
+    for (int i =  0; i < data->nodesByLevel[data->levels-1]; i++)
+    {
+        Point bottomLeftCorner = Point( (gapHorForRow*(i+1)+BLOCK_WIDTH*i), (VERTICAL_GAP * (data->levels - rowLevel) + BLOCK_HEIGHT * (data->levels - rowLevel - 1)) );
+        row[i] = new NodeSVG(bottomLeftCorner, data->nodeDataArray[rowLevel][i]);
+    }
+
+    return row;
+}
+
+void DrawConnections(NodeSVG ** row, NodeSVG ** above, int rowLen, int aboveLen)
+{
+    // a line for each block of row
+    // between the center of it and the center of its parent
+};
+
+void DrawRow(NodeSVG ** row, int rowLen)
+{
+        // for each nodeSVG draw a block there
+        // fill it with value
+        //maybe a border
+};
+
+
+
+
+void drawTreeSVG(TreeData<T> * data)
+{
+    // set canvas size
+    int height = ((data->levels + 1)) * VERTICAL_GAP) + (data->levels * BLOCK_HEIGHT);
+    int width = ((data->mostNodesOnLevel + 1) * MINIMAL_GAP) + (data->mostNodesOnLevel * BLOCK_WIDTH);
+    Dimensions dimensions(width, height);
+    Document doc("BST.svg", Layout(dimensions));
+
+    // create a row of ** data
+    NodeSVG ** above = NULL;
+
+    int rowLevel = data->levels-1; // last level
+    NodeSVG ** row = createRow(data, rowLevel); // enough pointers to pointers for all nodes of last row
+
+    for (int i = rowLevel; i >= 0; --i)
+    {
+        if ((i - 1) >= 0)
+        {
+            above = createRow(data, i-1);
+            drawConnections(row, above, data->nodesByLevel[i], data->nodesByLevel[i-1]);
+        }
+        drawRow(row, data->nodesByLevel[i]);
+
+        for (int j = 0; j < data->nodesByLevel[i]; j++)
+        {
+            delete row[j];
+        }
+        delete [] row;
+        row = above;
+    }
+
+    for (int j = 0; j < data->nodesByLevel[0]; ++j)
+    {
+        delete above[j];
+    }
+    delete [] above;
+
+    //this has to be a separate function
+
+}
+
 
 int main()
 {

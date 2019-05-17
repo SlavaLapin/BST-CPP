@@ -2,8 +2,6 @@
 // Created by slava on 24.04.19.
 //
 // todo balance (AVL Tree)
-// todo weight, parent
-// todo Node* rm
 // todo graphix,node data
 // todo Menus can become structs arr of Opt{label, ControlModule(submenu obj)}, then menus are composed of a list of them, menu starts a new menu
 // ControlModule => Menu class, ControlModule => Tree functor class, Menus call the chosen functor;
@@ -333,7 +331,7 @@ public:
 
         for (int i = 0; i < data->levels; ++i)
         {
-            cout<<"  [ ";
+            cout<<"  "<<data->nodesByLevel[i]<<": [ ";
             NodeData<T> * lvl_ptr = data->nodeDataArray[i];
             for(int j = 0; j < data->nodesByLevel[i]; ++j)
             {

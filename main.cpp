@@ -20,7 +20,7 @@ int menu()
 
 
 int main() {
-    int input = 0;
+    short input = 0;
     auto* root = new Node<int>;
 
     root->addNode(2);
@@ -32,6 +32,8 @@ int main() {
     root->addNode(8);
     root->addNode(9);
     root->addNode(7);
+    root->addNode(12);
+    root->addNode(14);
 
     root->drawTree();
 
