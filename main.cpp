@@ -11,7 +11,8 @@ int menu()
     cout<<"1. Add value to the tree."<<endl;
     cout<<"2. Remove a value from the tree."<<endl;
     cout<<"3. Check if a value is already in the tree."<<endl;
-    cout<<"4. Print the tree."<<endl;
+    cout<<"4. Walk the tree."<<endl;
+    cout<<"5. Generate an SVG file."<<endl;
     cout<<"------Type 1, 2, 3 or 4 and press Enter------"<<endl;
     cin >> inp;
     cout<<endl;
@@ -20,7 +21,6 @@ int menu()
 
 
 int main() {
-    short input = 0;
     auto* root = new Node<int>;
 
     root->addNode(2);
@@ -37,6 +37,7 @@ int main() {
 
     root->drawTree();
 
+    short input = 0;
     while(input != -1)
     {
         input = menu();
@@ -68,6 +69,9 @@ int main() {
                 cin>>c;
                 root->print(c);
                 cout<<"Done!";
+                break;
+            case 5:
+                root->drawTree();
                 break;
             default:
                 cout<<endl;

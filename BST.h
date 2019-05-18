@@ -15,6 +15,7 @@
 #include <string>
 #include <iostream>
 #include "NodeData.h"
+#include "TreeSVG.h"
 
 using namespace std;
 
@@ -349,8 +350,8 @@ public:
     void drawTree()
     {
         auto data = this->survey();
-        // call graphics functions later, but today
         drawTreeDEBUG(data);
+        drawTreeSVG(data);
     }
 };
 

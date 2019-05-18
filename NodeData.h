@@ -59,6 +59,8 @@ struct TreeData{
                 delete nodeDataArray[i][j];
             }
         }
+
+        delete[] nodesByLevel;
     }
 
 private:
