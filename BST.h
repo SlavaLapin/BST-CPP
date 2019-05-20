@@ -297,13 +297,24 @@ public:
 
     TreeData<T> * survey()
     {
-        int size = weightLeft + weightRight +1;
+        int size = weightLeft + weightRight + 1;
         NodeData<T> * allNodes = new NodeData<T> [size];
         int count = -1;
         int * counter = &count;
         this->submitData(allNodes, counter, 0, -1, false);
 
-        return new TreeData<T>(allNodes, size);
+        TreeData<T> * data = NULL;
+        std::cout<<"beep"<<std::endl;
+        try
+        {
+            data = new TreeData<T>(allNodes, size);
+        }
+        catch(std::bad_alloc &ba)
+        {
+            cout<<"new TreeData failed"<<std::endl;
+        }
+        std::cout<<"bop"<<std::endl;
+        return data;
     }
 
     void submitData(NodeData<T> * allNodes, int * counter, int myLevel, int myParent, bool amILeft)
@@ -339,19 +350,22 @@ public:
                 cout<<" V: "<<elem.value;
                 cout<<" PID: "<<elem.parentId;
                 cout<<" LEV: "<<elem.level;
-                cout<<" R: "<<!(elem.leftChild)<< ")";
+                cout<<" R: "<<!(elem.leftChild)<< ") ";
             }
             cout<<" ]"<<endl;
         }
 
-        cout<<"_*+*+*+*+_END_OF_TREE_+*+*+*+*_";
+        cout<<"_*+*+*+*+_END_OF_TREE_+*+*+*+*_"<<endl;
     }
 
     void drawTree()
     {
+        std::cout<<"Drawing a tree method"<<endl;
         auto data = this->survey();
         drawTreeDEBUG(data);
         drawTreeSVG(data);
+        std::cout<<"Drawing done. Deleting data"<<endl;
+        delete data;
     }
 };
 

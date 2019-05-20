@@ -42,23 +42,27 @@ struct TreeData{
 
     TreeData(NodeData<T> * list, int total)
     {
+        std::cout<<"!!!!! - TreeData Constructor started"<<std::endl;
         nodeCount = total;
         levels = _findMaxLevel(list);
+        std::cout<<"Max level found"<<std::endl;
         nodesByLevel = _countByLevel(list);
+        std::cout<<"Level-NodesCount array created"<<std::endl;
         mostNodesOnLevel = _findLargestRow();
+        std::cout<<"Largest Row found"<<std::endl;
         nodeDataArray = _orderByLevel(list);
+        std::cout<<"Level-Nodes array created"<<std::endl;
         delete [] list;
+        std::cout<<"Original list deleted. Constructor DONE!"<<std::endl;
     }
 
     ~TreeData()
     {
         for(int i = 0; i < levels; ++i)
         {
-            for(int j = 0; j < nodesByLevel[i]; ++j)
-            {
-                delete nodeDataArray[i][j];
-            }
+            delete [] nodeDataArray[i];
         }
+        delete [] nodeDataArray;
 
         delete[] nodesByLevel;
     }
@@ -98,6 +102,7 @@ private:
 
     NodeData<T> ** _orderByLevel(NodeData<T> * list)
     {
+        // this function does something which causes bad alloc
         NodeData<T> ** nodeRows = new NodeData<T> * [levels];
         for(int i = 0; i < levels; ++i)
         {
