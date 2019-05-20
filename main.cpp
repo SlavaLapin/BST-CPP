@@ -34,6 +34,7 @@ int main() {
     root->addNode(7);
     root->addNode(12);
     root->addNode(14);
+    root->addNode(3);
 
     root->drawTree();
 

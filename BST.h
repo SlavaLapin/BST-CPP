@@ -2,7 +2,6 @@
 // Created by slava on 24.04.19.
 //
 // todo balance (AVL Tree)
-// todo graphix,node data
 // todo Menus can become structs arr of Opt{label, ControlModule(submenu obj)}, then menus are composed of a list of them, menu starts a new menu
 // ControlModule => Menu class, ControlModule => Tree functor class, Menus call the chosen functor;
 // TreeFunctors execute simple commands like add(Tree* root, value)
@@ -333,8 +332,9 @@ public:
         }
     }
 
-    void drawTreeDEBUG(TreeData<T> * data)
+    void drawTreeDEBUG(TreeData<T> const * data)
     {
+        if (data == NULL) { std::cout<<"Empty TreeData pointer!"<<std::endl; return;}
         cout<<"_*+*+*+*+*+*_TREE_*+*+*+*+*+*_"<<endl;
         cout<<"Total: "<<data->nodeCount<<endl;
         cout<<"Levels: "<<data->levels<<" (Largest row consists of "<<data->mostNodesOnLevel<<" nodes)"<<endl;

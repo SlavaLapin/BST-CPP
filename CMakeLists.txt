@@ -3,4 +3,4 @@ project(Workbench)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Workbench main.cpp BST.h NodeData.h TreeSVG.h TreeSVG.cpp)
+add_executable(Workbench main.cpp BST.h NodeData.h TreeSVG.h)

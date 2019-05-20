@@ -18,7 +18,7 @@ const int VERTICAL_GAP = 100;
 const int BLOCK_HEIGHT = 100;
 const int _BLOCK_WIDTH = 200;
 const int _PADDING_X = 15;
-const int _PADDING_Y = -55;
+const int _PADDING_Y = -57;
 const int _FONT_SIZE = 26;
 const int LINE_WIDTH = 5;
 
@@ -110,6 +110,7 @@ void DrawRow(Document &doc, NodeSVG<T> **row, int rowLen) {
 
 template<typename T>
 static void drawTreeSVG(TreeData<T> * data) {
+    if (data == NULL) { std::cout<<"Empty TreeData pointer!"<<std::endl; return;}
     // set canvas size
     int height = ((data->levels + 1) * VERTICAL_GAP) + (data->levels * BLOCK_HEIGHT);
     int width = ((data->mostNodesOnLevel + 1) * MINIMAL_GAP) + (data->mostNodesOnLevel * _BLOCK_WIDTH);

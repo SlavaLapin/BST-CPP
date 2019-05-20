@@ -104,22 +104,26 @@ private:
     {
         // this function does something which causes bad alloc
         NodeData<T> ** nodeRows = new NodeData<T> * [levels];
+        std::cout<<"NodeData<T> ** nodeRows allocated"<<std::endl;
         for(int i = 0; i < levels; ++i)
         {
             nodeRows[i] = new NodeData<T> [nodesByLevel[i]];
         }
+        std::cout<<"Each NodeData<T> [] allocated"<<std::endl;
 
         int * rowCounter = new int[levels];
         for (int i = 0; i < levels; ++i)
         {
             rowCounter[i] = 0;
         }
+        std::cout<<"Array of counters created and initialised"<<std::endl;
         for(int i = 0; i < nodeCount; ++i)
         {
             NodeData<T> & tmp = list[i];
             nodeRows[tmp.level][rowCounter[tmp.level]]=NodeData<T>(tmp.value, tmp.id, tmp.parentId, tmp.leftChild, tmp.level);
             rowCounter[tmp.level]++;
         }
+        std::cout<<"NodeData s created"<<std::endl;
 
         return nodeRows;
     }
