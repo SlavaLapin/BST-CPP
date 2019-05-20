@@ -303,7 +303,6 @@ public:
         this->submitData(allNodes, counter, 0, -1, false);
 
         TreeData<T> * data = NULL;
-        std::cout<<"beep"<<std::endl;
         try
         {
             data = new TreeData<T>(allNodes, size);
@@ -312,7 +311,6 @@ public:
         {
             cout<<"new TreeData failed"<<std::endl;
         }
-        std::cout<<"bop"<<std::endl;
         return data;
     }
 
@@ -360,12 +358,13 @@ public:
 
     void drawTree()
     {
-        std::cout<<"Drawing a tree method"<<endl;
+        std::cout<<"Drawing a tree method"<<std::endl;
         auto data = this->survey();
         drawTreeDEBUG(data);
         drawTreeSVG(data);
-        std::cout<<"Drawing done. Deleting data"<<endl;
+        std::cout<<"Drawing done. Deleting data"<<std::endl;
         delete data;
+        std::cout<<"drawTree method done its job"<<std::endl;
     }
 };
 
