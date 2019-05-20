@@ -50,7 +50,7 @@ public:
 
     explicit Node(const T& value, Node * parent) : empty(false), value_(value), weightLeft(0), weightRight(0), parent(parent), left(NULL), right(NULL) {} //new node
 
-    Node() {empty = true; left = NULL; right = NULL; parent = NULL;} // root creation
+    Node() {empty = true; left = NULL; right = NULL; weightLeft = 0; weightRight = 0; parent = NULL;} // root creation
 
     Node(const Node& original)
     {
@@ -359,7 +359,7 @@ public:
     void drawTree()
     {
         std::cout<<"Drawing a tree method"<<std::endl;
-        auto data = this->survey();
+        TreeData<T> * data = this->survey();
         drawTreeDEBUG(data);
         drawTreeSVG(data);
         std::cout<<"Drawing done. Deleting data"<<std::endl;

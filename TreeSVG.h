@@ -46,7 +46,14 @@ template<class T>
 NodeSVG <T> **createRow(TreeData<T> *data, int rowLevel, int width) {
     std::cout<<"Creating visual data for row: "<<rowLevel<<std::endl;
     int rowNodes = data->nodesByLevel[rowLevel];
-    NodeSVG<T> ** row = new NodeSVG<T> * [data->nodesByLevel[rowLevel]];
+    NodeSVG<T> ** row;
+    try{
+        row = new NodeSVG<T> * [data->nodesByLevel[rowLevel]];
+    }
+    catch(std::bad_alloc &ba)
+    {
+        std::cout<<ba.what()<<std::endl;
+    }
     int gapHorForRow = (width - _BLOCK_WIDTH * rowNodes) / (rowNodes + 1);
 
     for (int i =  0; i < data->nodesByLevel[data->levels-1]; i++)

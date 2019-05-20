@@ -130,7 +130,8 @@ private:
     NodeData<T> ** _orderByLevel(NodeData<T> * list)
     {
         // this function does something which causes bad alloc
-        NodeData<T> ** nodeRows = new NodeData<T> * [levels];
+        std::cout<<"aaaaaaaa"<<levels<<std::endl;
+        NodeData<T> ** nodeRows = new NodeData<T>* [levels];
         std::cout<<"NodeData<T> ** nodeRows allocated"<<std::endl;
         for(int i = 0; i < levels; ++i)
         {
