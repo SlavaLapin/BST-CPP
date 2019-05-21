@@ -119,8 +119,6 @@ class Node
         if (this->parent != NULL) this->parent->balance();
     }
 
-    void leftTurn(){}
-
     void rightTurn(){}
 
     TreeData<T> * survey() const
@@ -376,6 +374,33 @@ public:
 
         delete data;
         std::cout<<"drawTree method done its job"<<std::endl;
+    }
+
+    void leftTurn()
+    {
+        Node tmp = *this;
+
+        this->right = this->right->left;
+        this->right->parent = this;
+        this->weightRight = (this->right->weightRight) + (this->right->weightLeft) + 1;
+
+        tmp.right->left = this;
+        this->parent = tmp.right;
+        tmp.right->weightLeft = (this->weightLeft) + (this->weightRight) + 1;
+
+        this->parent->parent = tmp.parent;
+
+        tmp = *this;
+        *this = *(this->parent);
+        *(this->left) = tmp;
+
+        tmp.right = NULL;
+        tmp.left = NULL;
+        // -+- this == root, this.right = pivot
+        // root => root.right
+        // root.right.left => root
+        // root.right => root.right.left
+
     }
 };
 

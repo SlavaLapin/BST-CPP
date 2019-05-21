@@ -64,9 +64,8 @@ void menu(Node<T> * root)
     cout<<"FIN.";
 }
 
-int main() {
-    auto * root = new Node<int>;
-
+void test_1(Node<int> * root)
+{
     root->addNode(2);
     root->addNode(5);
     root->addNode(4);
@@ -88,7 +87,27 @@ int main() {
     root->addNode(102);
     root->addNode(56);
     root->drawTree();
+}
 
+void test_2(Node<int> * root)
+{
+    root->addNode(3);
+    root->addNode(2);
+    root->addNode(5);
+    root->addNode(4);
+    root->addNode(7);
+    root->drawTree();
+    char a;
+    cin >> a;
+    root->leftTurn();
+    root->drawTree();
+}
+
+int main() {
+    auto * root = new Node<int>;
+
+    //test_1(root);
+    test_2(root);
     menu(root);
 
     delete root;
