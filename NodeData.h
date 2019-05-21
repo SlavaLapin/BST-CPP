@@ -45,16 +45,23 @@ struct TreeData{
         std::cout<<"!!!!! - TreeData Constructor started"<<std::endl;
         nodeCount = total;
         std::cout<<"Supplied nodes total: "<<nodeCount<<std::endl;
+
         levels = _findMaxLevel(list);
         std::cout<<"Max level found: "<<levels<<std::endl;
+
         nodesByLevel = _countByLevel(list);
+        if (nodesByLevel == NULL){std::cout<<"Internal error"<<std::endl; return;}
         std::cout<<"Level-NodesCount array created"<<std::endl;
+
         mostNodesOnLevel = _findLargestRow();
         std::cout<<"Largest Row found"<<std::endl;
+
         nodeDataArray = _orderByLevel(list);
+        if (nodeDataArray == NULL){std::cout<<"Internal error"<<std::endl; return;}
         std::cout<<"Level-Nodes array created"<<std::endl;
+
         delete [] list;
-        std::cout<<"Original list deleted. Constructor DONE!"<<std::endl;
+        std::cout<<"Original struct list deleted []. Constructor DONE!"<<std::endl;
     }
 
     ~TreeData()
@@ -79,7 +86,7 @@ struct TreeData{
 
 private:
 
-    int _findMaxLevel(NodeData<T> * list)
+    int _findMaxLevel (NodeData<T> const * list) const
     {
         int maxLevel = 0;
         for (int i = 0; i < this->nodeCount; ++i)
@@ -89,7 +96,7 @@ private:
         return maxLevel+1;
     }
 
-    int * _countByLevel(NodeData<T> * list)
+    int * _countByLevel(NodeData<T> const * list) const
     {
         int *countByLevel = NULL;
 
@@ -115,7 +122,7 @@ private:
         return countByLevel;
     }
 
-    int _findLargestRow()
+    int _findLargestRow () const
     {
         int max = 0;
         for(int i = 0; i < this->levels; ++i)
@@ -127,11 +134,19 @@ private:
         return max;
     }
 
-    NodeData<T> ** _orderByLevel(NodeData<T> * list)
+    NodeData<T> ** _orderByLevel(NodeData<T> const * list) const
     {
         // this function does something which causes bad alloc
+        NodeData<T> **nodeRows = NULL;
         std::cout<<"aaaaaaaa"<<levels<<std::endl;
-        NodeData<T> ** nodeRows = new NodeData<T>* [levels];
+        try {
+            nodeRows = new NodeData<T> * [levels];
+        }
+        catch (std::bad_alloc &ba)
+        {
+            std::cout<<"Failed allocating NodeData<T> ** of size "<<levels<<std::endl<<ba.what()<<std::endl;
+            return nodeRows;
+        }
         std::cout<<"NodeData<T> ** nodeRows allocated"<<std::endl;
         for(int i = 0; i < levels; ++i)
         {
@@ -152,7 +167,7 @@ private:
         std::cout<<"Array of counters created and initialised"<<std::endl;
         for(int i = 0; i < nodeCount; ++i)
         {
-            NodeData<T> & tmp = list[i];
+            const NodeData<T> & tmp = list[i];
             nodeRows[tmp.level][rowCounter[tmp.level]]=NodeData<T>(tmp.value, tmp.id, tmp.parentId, tmp.leftChild, tmp.level);
             rowCounter[tmp.level]++;
         }

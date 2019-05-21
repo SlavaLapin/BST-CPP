@@ -294,10 +294,18 @@ public:
 
     void rightTurn(){}
 
-    TreeData<T> * survey()
+    TreeData<T> * survey() const
     {
         int size = weightLeft + weightRight + 1;
-        NodeData<T> * allNodes = new NodeData<T> [size];
+        NodeData<T> * allNodes = NULL;
+        try {
+            allNodes = new NodeData<T> [size];
+        }
+        catch(std::bad_alloc &ba)
+        {
+            std::cout<<ba.what();
+            return NULL;
+        }
         int count = -1;
         int * counter = &count;
         this->submitData(allNodes, counter, 0, -1, false);
@@ -314,7 +322,7 @@ public:
         return data;
     }
 
-    void submitData(NodeData<T> * allNodes, int * counter, int myLevel, int myParent, bool amILeft)
+    void submitData(NodeData<T> * allNodes, int * const counter, const int myLevel, const int myParent, const bool amILeft) const
     {
         ++(*counter);
         allNodes[*counter] = NodeData<T>(value_, *counter, myParent, amILeft, myLevel);
@@ -330,7 +338,7 @@ public:
         }
     }
 
-    void drawTreeDEBUG(TreeData<T> const * data)
+    void drawTreeDEBUG(TreeData<T> const * data) const
     {
         if (data == NULL) { std::cout<<"Empty TreeData pointer!"<<std::endl; return;}
         cout<<"_*+*+*+*+*+*_TREE_*+*+*+*+*+*_"<<endl;
@@ -356,13 +364,16 @@ public:
         cout<<"_*+*+*+*+_END_OF_TREE_+*+*+*+*_"<<endl;
     }
 
-    void drawTree()
+    void drawTree() const
     {
         std::cout<<"Drawing a tree method"<<std::endl;
         TreeData<T> * data = this->survey();
+        if(data == NULL) return;
+
         drawTreeDEBUG(data);
         drawTreeSVG(data);
         std::cout<<"Drawing done. Deleting data"<<std::endl;
+
         delete data;
         std::cout<<"drawTree method done its job"<<std::endl;
     }

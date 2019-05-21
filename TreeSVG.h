@@ -39,20 +39,21 @@ struct NodeSVG
     int parentId;
     bool leftChild;
 
-    NodeSVG(Point origin, NodeData<T> const& node): id(node.id), origin(origin), valueStr(to_string(node.value)), parentId(node.parentId), leftChild(node.leftChild) {}
+    NodeSVG(const Point origin, NodeData<T> const& node): id(node.id), origin(origin), valueStr(to_string(node.value)), parentId(node.parentId), leftChild(node.leftChild) {}
 };
 
 template<class T>
-NodeSVG <T> **createRow(TreeData<T> *data, int rowLevel, int width) {
+NodeSVG <T> **createRow(TreeData<T> const * const data, const int rowLevel, const int width) {
     std::cout<<"Creating visual data for row: "<<rowLevel<<std::endl;
     int rowNodes = data->nodesByLevel[rowLevel];
-    NodeSVG<T> ** row;
+    NodeSVG<T> ** row = NULL;
     try{
         row = new NodeSVG<T> * [data->nodesByLevel[rowLevel]];
     }
     catch(std::bad_alloc &ba)
     {
         std::cout<<ba.what()<<std::endl;
+        return row;
     }
     int gapHorForRow = (width - _BLOCK_WIDTH * rowNodes) / (rowNodes + 1);
 
@@ -66,16 +67,17 @@ NodeSVG <T> **createRow(TreeData<T> *data, int rowLevel, int width) {
 }
 
 template<class T>
-void deleteRow(NodeSVG<T> **row, int len) {
+void deleteRow(NodeSVG<T> ** row, const int len) {
     for (int j = 0; j < len; j++)
     {
         delete row[j];
+        row[j] = NULL;
     }
     delete [] row;
 }
 
 template<class T>
-Point getParentOrigin(NodeSVG<T> *child, NodeSVG<T> **above, int aboveLen) {
+Point getParentOrigin(NodeSVG<T>  * const child, NodeSVG<T> ** const above, const int aboveLen) {
     for (int i = 0; i < aboveLen; ++i)
     {
         if(child->parentId == above[i]->id)
@@ -88,7 +90,8 @@ Point getParentOrigin(NodeSVG<T> *child, NodeSVG<T> **above, int aboveLen) {
 }
 
 template<class T>
-void DrawConnections(Document &doc, NodeSVG<T> **row, NodeSVG<T> **above, int rowLen, int aboveLen) {
+void DrawConnections(Document &doc, NodeSVG<T>  ** const row, NodeSVG<T>  ** const above, const int rowLen, const int aboveLen)
+{
     for (int i = 0; i < rowLen; ++i)
     {
         Point a = row[i]->origin;
@@ -105,7 +108,8 @@ void DrawConnections(Document &doc, NodeSVG<T> **row, NodeSVG<T> **above, int ro
 }
 
 template<class T>
-void DrawRow(Document &doc, NodeSVG<T> **row, int rowLen) {
+void DrawRow(Document &doc, NodeSVG<T> ** const row, const int rowLen)
+{
     for (int i = 0; i < rowLen; ++i)
     {
         doc << Rectangle(row[i]->origin, _BLOCK_WIDTH, BLOCK_HEIGHT, Color::Silver);
@@ -117,9 +121,10 @@ void DrawRow(Document &doc, NodeSVG<T> **row, int rowLen) {
 }
 
 template<typename T>
-static void drawTreeSVG(TreeData<T> * data) {
+static void drawTreeSVG(TreeData<T> const * const data) {
     if (data == NULL) { std::cout<<"Empty TreeData pointer!"<<std::endl; return;}
     if (data->levels < 1) {std::cout<<"An empty tree cannot be drawn"<<std::endl; return;}
+
     // set canvas size
     int height = ((data->levels + 1) * VERTICAL_GAP) + (data->levels * BLOCK_HEIGHT);
     int width = ((data->mostNodesOnLevel + 1) * MINIMAL_GAP) + (data->mostNodesOnLevel * _BLOCK_WIDTH);
@@ -136,12 +141,14 @@ static void drawTreeSVG(TreeData<T> * data) {
     NodeSVG<T> ** above = NULL;
     int rowLevel = data->levels-1; // last level
     NodeSVG<T> ** row = createRow(data, rowLevel, width); // enough pointers to pointers for all nodes of last row
+    if(row == NULL){std::cout<<"Drawing block row alloc error"<<std::endl; return;}
 
     for (int i = rowLevel; i >= 0; --i)
     {
         if ((i - 1) >= 0)
         {
             above = createRow(data, i-1, width);
+            if(above == NULL){std::cout<<"Drawing block row alloc error"<<std::endl; return;}
             std::cout<<"Drawing connections for rows "<<i<<" and "<<i-1<<std::endl;
             DrawConnections(doc, row, above, data->nodesByLevel[i], data->nodesByLevel[i-1]);
         }
