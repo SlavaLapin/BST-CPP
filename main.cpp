@@ -44,7 +44,7 @@ void menu(Node<T> * root)
             case 3:
                 cout<<"What value are you trying to find?"<<endl;
                 cin>>val;
-                cout<< root->doesNodeExist(val)<<endl;
+                cout<<root->doesNodeExist(val)<<endl;
                 cout<<"Done!";
                 break;
             case 4:
@@ -61,6 +61,7 @@ void menu(Node<T> * root)
                 cout<<endl;
         }
     }
+    cout<<"FIN.";
 }
 
 int main() {

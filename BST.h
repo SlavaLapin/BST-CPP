@@ -26,6 +26,8 @@ class Node
     int weightLeft;
     int weightRight;
     Node* parent;
+    Node* left;
+    Node* right;
 
     void _parentWeightDecrease()
     {
@@ -37,10 +39,135 @@ class Node
         this->parent->_parentWeightDecrease();
     }
 
-public:
+    void drawTreeDEBUG(TreeData<T> const * data) const
+    {
+        if (data == NULL) { std::cout<<"Empty TreeData pointer!"<<std::endl; return;}
+        cout<<"_*+*+*+*+*+*_TREE_*+*+*+*+*+*_"<<endl;
+        cout<<"Total: "<<data->nodeCount<<endl;
+        cout<<"Levels: "<<data->levels<<" (Largest row consists of "<<data->mostNodesOnLevel<<" nodes)"<<endl;
 
-    Node* left;
-    Node* right;
+        for (int i = 0; i < data->levels; ++i)
+        {
+            cout<<"  "<<data->nodesByLevel[i]<<": [ ";
+            NodeData<T> * lvl_ptr = data->nodeDataArray[i];
+            for(int j = 0; j < data->nodesByLevel[i]; ++j)
+            {
+                NodeData<T> elem = lvl_ptr[j];
+                cout<<"(ID: "<<elem.id;
+                cout<<" V: "<<elem.value;
+                cout<<" PID: "<<elem.parentId;
+                cout<<" LEV: "<<elem.level;
+                cout<<" R: "<<!(elem.leftChild)<< ") ";
+            }
+            cout<<" ]"<<endl;
+        }
+
+        cout<<"_*+*+*+*+_END_OF_TREE_+*+*+*+*_"<<endl;
+    }
+
+    Node* hangNodes(Node * migrant)
+    {
+        if (migrant->value_ > this->value_) // to be hanged on the right
+        {
+            this->weightRight+=migrant->weightLeft;
+            this->weightRight+=migrant->weightRight+1;
+            if(this->right == NULL)
+            {
+                this->right = migrant;
+                migrant->parent = this;
+                return this;
+            }else
+            {
+                return this->right->hangNodes(migrant);
+            }
+        }else
+        {
+            this->weightLeft+=migrant->weightLeft;
+            this->weightLeft+=migrant->weightRight+1;
+            if(this->left == NULL)
+            {
+                this->left = migrant;
+                migrant->parent = this;
+                return this;
+            }else
+            {
+                return this->left->hangNodes(migrant);
+            }
+        }
+    }
+
+    Node * const findNode(const T& value)
+    {
+        if (value == value_) return this;
+        if (value > value_)
+        {
+            if (right != NULL) return right->findNode(value);
+            else return NULL;
+        }
+        else
+        {
+            if (left != NULL) return left->findNode(value);
+            else return NULL;
+        }
+    }
+
+    void balance()
+    {
+        int nothing;
+        cout<<"Just pretending for now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
+        cin>>nothing;
+        if (this->parent != NULL) this->parent->balance();
+    }
+
+    void leftTurn(){}
+
+    void rightTurn(){}
+
+    TreeData<T> * survey() const
+    {
+        int size = weightLeft + weightRight + 1;
+        NodeData<T> * allNodes = NULL;
+        try {
+            allNodes = new NodeData<T> [size];
+        }
+        catch(std::bad_alloc &ba)
+        {
+            std::cout<<ba.what();
+            return NULL;
+        }
+        int count = -1;
+        int * counter = &count;
+        this->submitData(allNodes, counter, 0, -1, false);
+
+        TreeData<T> * data = NULL;
+        try
+        {
+            data = new TreeData<T>(allNodes, size);
+        }
+        catch(std::bad_alloc &ba)
+        {
+            cout<<"new TreeData failed"<<std::endl;
+        }
+        return data;
+    }
+
+    void submitData(NodeData<T> * allNodes, int * const counter, const int myLevel, const int myParent, const bool amILeft) const
+    {
+        ++(*counter);
+        allNodes[*counter] = NodeData<T>(value_, *counter, myParent, amILeft, myLevel);
+        int myId = *counter;
+
+        if (left != NULL)
+        {
+            left->submitData(allNodes, counter, myLevel+1, myId, true);
+        }
+        if(right != NULL)
+        {
+            right->submitData(allNodes, counter, myLevel+1, myId, false);
+        }
+    }
+
+public:
 
     ~Node()
     {
@@ -99,37 +226,6 @@ public:
                 return this; //this node has just gave birth to a child
             }
             else return left->addNode(value);
-        }
-    }
-
-    Node* hangNodes(Node * migrant)
-    {
-        if (migrant->value_ > this->value_) // to be hanged on the right
-        {
-            this->weightRight+=migrant->weightLeft;
-            this->weightRight+=migrant->weightRight+1;
-            if(this->right == NULL)
-            {
-                this->right = migrant;
-                migrant->parent = this;
-                return this;
-            }else
-            {
-                return this->right->hangNodes(migrant);
-            }
-        }else
-        {
-            this->weightLeft+=migrant->weightLeft;
-            this->weightLeft+=migrant->weightRight+1;
-            if(this->left == NULL)
-            {
-                this->left = migrant;
-                migrant->parent = this;
-                return this;
-            }else
-            {
-                return this->left->hangNodes(migrant);
-            }
         }
     }
     
@@ -224,24 +320,9 @@ public:
         if (balancingPoint != NULL) balancingPoint->balance();
     }
 
-    Node* findNode(const T& value)
-    {
-        if (value == value_) return this;
-        if (value > value_)
-        {
-            if (right != NULL) return right->findNode(value);
-            else return NULL;
-        }
-        else
-        {
-            if (left != NULL) return left->findNode(value);
-            else return NULL;
-        }
-    }
-
     bool doesNodeExist(const T& value)
     {
-        Node * n = this->findNode(value);
+        const Node * const n = this->findNode(value);
         if (n == NULL)
         {
             cout<<"This value is not contained in the tree!"<<endl;
@@ -257,7 +338,7 @@ public:
         }
     }
 
-    void print(const char& mode) // l - leftside, r - rightside, c - center
+    void print(const char& mode) const // l - leftside, r - rightside, c - center
     {
         if(empty) return;
         switch (mode)
@@ -280,88 +361,6 @@ public:
             default:
                 cout<<"Print mode not specified"<<endl;
         }
-    }
-
-    void balance()
-    {
-        int nothing;
-        cout<<"Just pretending for now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
-        cin>>nothing;
-        if (this->parent != NULL) this->parent->balance();
-    }
-
-    void leftTurn(){}
-
-    void rightTurn(){}
-
-    TreeData<T> * survey() const
-    {
-        int size = weightLeft + weightRight + 1;
-        NodeData<T> * allNodes = NULL;
-        try {
-            allNodes = new NodeData<T> [size];
-        }
-        catch(std::bad_alloc &ba)
-        {
-            std::cout<<ba.what();
-            return NULL;
-        }
-        int count = -1;
-        int * counter = &count;
-        this->submitData(allNodes, counter, 0, -1, false);
-
-        TreeData<T> * data = NULL;
-        try
-        {
-            data = new TreeData<T>(allNodes, size);
-        }
-        catch(std::bad_alloc &ba)
-        {
-            cout<<"new TreeData failed"<<std::endl;
-        }
-        return data;
-    }
-
-    void submitData(NodeData<T> * allNodes, int * const counter, const int myLevel, const int myParent, const bool amILeft) const
-    {
-        ++(*counter);
-        allNodes[*counter] = NodeData<T>(value_, *counter, myParent, amILeft, myLevel);
-        int myId = *counter;
-
-        if (left != NULL)
-        {
-            left->submitData(allNodes, counter, myLevel+1, myId, true);
-        }
-        if(right != NULL)
-        {
-            right->submitData(allNodes, counter, myLevel+1, myId, false);
-        }
-    }
-
-    void drawTreeDEBUG(TreeData<T> const * data) const
-    {
-        if (data == NULL) { std::cout<<"Empty TreeData pointer!"<<std::endl; return;}
-        cout<<"_*+*+*+*+*+*_TREE_*+*+*+*+*+*_"<<endl;
-        cout<<"Total: "<<data->nodeCount<<endl;
-        cout<<"Levels: "<<data->levels<<" (Largest row consists of "<<data->mostNodesOnLevel<<" nodes)"<<endl;
-
-        for (int i = 0; i < data->levels; ++i)
-        {
-            cout<<"  "<<data->nodesByLevel[i]<<": [ ";
-            NodeData<T> * lvl_ptr = data->nodeDataArray[i];
-            for(int j = 0; j < data->nodesByLevel[i]; ++j)
-            {
-                NodeData<T> elem = lvl_ptr[j];
-                cout<<"(ID: "<<elem.id;
-                cout<<" V: "<<elem.value;
-                cout<<" PID: "<<elem.parentId;
-                cout<<" LEV: "<<elem.level;
-                cout<<" R: "<<!(elem.leftChild)<< ") ";
-            }
-            cout<<" ]"<<endl;
-        }
-
-        cout<<"_*+*+*+*+_END_OF_TREE_+*+*+*+*_"<<endl;
     }
 
     void drawTree() const
