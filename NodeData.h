@@ -5,6 +5,8 @@
 #ifndef WORKBENCH_NODEDATA_H
 #define WORKBENCH_NODEDATA_H
 
+#include <iostream>
+
 template <class T>
 struct NodeData{
     T value;
@@ -108,7 +110,7 @@ private:
             return countByLevel;
         }
 
-        for (int i = 0; i < this->nodeCount; ++i)
+        for (int i = 0; i < this->levels; ++i)
         {
             countByLevel[i] = 0;
         }

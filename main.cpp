@@ -35,6 +35,15 @@ int main() {
     root->addNode(12);
     root->addNode(14);
     root->addNode(3);
+    //
+    root->addNode(100);
+    //root->addNode(90);
+    //root->addNode(88);
+    //root->addNode(82);
+    //root->addNode(64);
+    //root->addNode(50);
+    //root->addNode(102);
+    //root->addNode(56);
 
     root->drawTree();
 

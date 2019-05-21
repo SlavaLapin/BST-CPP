@@ -48,7 +48,7 @@ NodeSVG <T> **createRow(TreeData<T> const * const data, const int rowLevel, cons
     int rowNodes = data->nodesByLevel[rowLevel];
     NodeSVG<T> ** row = NULL;
     try{
-        row = new NodeSVG<T> * [data->nodesByLevel[rowLevel]];
+        row = new NodeSVG<T> * [rowNodes];
     }
     catch(std::bad_alloc &ba)
     {
@@ -57,7 +57,7 @@ NodeSVG <T> **createRow(TreeData<T> const * const data, const int rowLevel, cons
     }
     int gapHorForRow = (width - _BLOCK_WIDTH * rowNodes) / (rowNodes + 1);
 
-    for (int i =  0; i < data->nodesByLevel[data->levels-1]; i++)
+    for (int i =  0; i < rowNodes; i++)
     {
         Point bottomLeftCorner = Point( (gapHorForRow*(i+1)+_BLOCK_WIDTH*i), (100 + VERTICAL_GAP * (data->levels - rowLevel) + BLOCK_HEIGHT * (data->levels - rowLevel - 1)) );
         row[i] = new NodeSVG<T>(bottomLeftCorner, data->nodeDataArray[rowLevel][i]);
@@ -85,7 +85,7 @@ Point getParentOrigin(NodeSVG<T>  * const child, NodeSVG<T> ** const above, cons
             return above[i]->origin;
         }
     }
-    std::cout<<"failed finding parent: "<<child->parentId;
+    std::cout<<"failed finding parent: "<<child->parentId<<std::endl;
     return Point(0, 0);
 }
 
@@ -147,7 +147,7 @@ static void drawTreeSVG(TreeData<T> const * const data) {
     {
         if ((i - 1) >= 0)
         {
-            above = createRow(data, i-1, width);
+            above = createRow(data, i-1, width); // fails to create the row below first element if I add 13th node
             if(above == NULL){std::cout<<"Drawing block row alloc error"<<std::endl; return;}
             std::cout<<"Drawing connections for rows "<<i<<" and "<<i-1<<std::endl;
             DrawConnections(doc, row, above, data->nodesByLevel[i], data->nodesByLevel[i-1]);
