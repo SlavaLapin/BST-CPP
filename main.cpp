@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int menu()
+int splashMainMenu()
 {
     int inp = -1;
     cout<<endl;
@@ -16,44 +16,18 @@ int menu()
     cout<<"------Type 1, 2, 3 or 4 and press Enter------"<<endl;
     cin >> inp;
     cout<<endl;
-    return  inp;
+    return inp;
 }
 
-
-int main() {
-    auto* root = new Node<int>;
-
-    root->addNode(2);
-    root->addNode(5);
-    root->addNode(4);
-    root->addNode(1);
-    root->addNode(6);
-    root->addNode(10);
-    root->addNode(8);
-    root->addNode(9);
-    root->addNode(7);
-    root->addNode(12);
-    root->addNode(14);
-    root->addNode(3);
-    //
-    root->addNode(100);
-    root->addNode(90);
-    root->addNode(88);
-    root->addNode(82);
-    root->addNode(64);
-    root->addNode(50);
-    root->addNode(102);
-    root->addNode(56);
-
-    root->drawTree();
-
-    short input = 0;
-    while(input != -1)
+template <typename T>
+void menu(Node<T> * root)
+{
+    T val;
+    short userMenuSelection = 0;
+    while(userMenuSelection != -1)
     {
-        input = menu();
-        // fix flexibility for types later
-        int val;
-        switch(input)
+        userMenuSelection = splashMainMenu();
+        switch(userMenuSelection)
         {
             case 1:
                 cout<<"What value do you want to add?"<<endl;
@@ -87,6 +61,35 @@ int main() {
                 cout<<endl;
         }
     }
+}
+
+int main() {
+    auto * root = new Node<int>;
+
+    root->addNode(2);
+    root->addNode(5);
+    root->addNode(4);
+    root->addNode(1);
+    root->addNode(6);
+    root->addNode(10);
+    root->addNode(8);
+    root->addNode(9);
+    root->addNode(7);
+    root->addNode(12);
+    root->addNode(14);
+    root->addNode(3);
+    root->addNode(100);
+    root->addNode(90);
+    root->addNode(88);
+    root->addNode(82);
+    root->addNode(64);
+    root->addNode(50);
+    root->addNode(102);
+    root->addNode(56);
+    root->drawTree();
+
+    menu(root);
+
     delete root;
     return 0;
 }
