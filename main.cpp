@@ -3,6 +3,14 @@
 
 using namespace std;
 
+// !!! TODO NULL-protect rotation functions!!!!
+// TODO Double-rotations?
+// TODO Determine rotation criteria?
+// TODO test trees of different types
+// TODO findmax(), findmin()
+// TODO splitOn()
+// TODO print study, walk through with highlights
+
 int splashMainMenu()
 {
     int inp = -1;
@@ -89,26 +97,10 @@ void test_1(Node<int> * root)
     root->drawTree();
 }
 
-void test_2(Node<int> * root)
-{
-    root->addNode(3);
-    root->addNode(2);
-    root->addNode(5);
-    root->addNode(4);
-    root->addNode(7);
-    //root->drawTree();
-    //char a;
-    //cin >> a;
-    root->leftTurn();
-    root->rightTurn();
-    root->drawTree();
-}
-
 int main() {
     auto * root = new Node<int>;
 
     //test_1(root);
-    test_2(root);
     menu(root);
 
     delete root;
