@@ -115,8 +115,6 @@ class Node
         if (this->parent != NULL) this->parent->balance();
     }
 
-    void rightTurn(){}
-
     TreeData<T> * survey() const
     {
         int size = weightLeft + weightRight + 1;
@@ -161,6 +159,59 @@ class Node
         }
     }
 
+    void leftTurn()
+    {
+        Node<T> * pivot = this->right;
+        Node<T> * pivotRightChild = pivot->right;
+        Node<T> * pivotLeftChild = pivot->left;
+        Node<T> * oldRootLeftChild = this->left;
+
+        T tmp = this->value_;
+        this->value_ = pivot->value_;
+        pivot->value_ = tmp;
+
+        this->left = this->right;
+        int tmp_w = this->weightLeft;
+        this->weightLeft = this->weightRight;
+
+        this->right = pivot->right; // not NULL safe
+        this->right->parent = this; // not NULL safe
+        this->weightRight = pivot->weightRight;
+
+        pivot->right = pivot->left; // somewhat not NULL safe
+        pivot->weightRight = pivot->weightLeft;
+        pivot->left = oldRootLeftChild; // not NULL safe
+        pivot->left->parent = pivot; // not NULL safe
+        pivot->weightLeft = tmp_w;
+
+    }
+
+    void rightTurn()
+    {
+        Node<T> * pivot = this->left;
+        Node<T> * pivotRightChild = pivot->right;
+        Node<T> * pivotLeftChild = pivot->left;
+        Node<T> * oldRootRightChild = this->right;
+
+        T tmp = this->value_;
+        this->value_ = pivot->value_;
+        pivot->value_ = tmp;
+
+        this->right = this->left;
+        int tmp_w = this->weightRight;
+        this->weightRight = this->weightLeft;
+
+        this->left = pivot->left; // not NULL safe
+        this->left->parent = this; // not NULL safe
+        this->weightLeft = pivot->weightLeft;
+
+        pivot->left = pivot->right; // somewhat not NULL safe
+        pivot->weightLeft = pivot->weightRight;
+        pivot->right = oldRootRightChild; // not NULL safe
+        pivot->right->parent = pivot; // not NULL safe
+        pivot->weightRight = tmp_w;
+    }
+
 public:
 
     ~Node()
@@ -186,6 +237,7 @@ public:
 
     Node& operator=(const Node& original)
     {
+        std::cout<<"OPERATOR= Trying to change node "<<this->value_<<" into "<<original.value_<<" node."<<std::endl;
         this->value_ = original.value_;
         this->left = original.left;
         this->right = original.right;
@@ -370,33 +422,6 @@ public:
 
         delete data;
         std::cout<<"drawTree method done its job"<<std::endl;
-    }
-
-    void leftTurn()
-    {
-        Node tmp = *this;
-
-        this->right = this->right->left;
-        this->right->parent = this;
-        this->weightRight = (this->right->weightRight) + (this->right->weightLeft) + 1;
-
-        tmp.right->left = this;
-        this->parent = tmp.right;
-        tmp.right->weightLeft = (this->weightLeft) + (this->weightRight) + 1;
-
-        this->parent->parent = tmp.parent;
-
-        tmp = *this;
-        *this = *(this->parent);
-        *(this->left) = tmp;
-
-        tmp.right = NULL;
-        tmp.left = NULL;
-        // -+- this == root, this.right = pivot
-        // root => root.right
-        // root.right.left => root
-        // root.right => root.right.left
-
     }
 };
 

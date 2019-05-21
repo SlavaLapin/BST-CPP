@@ -96,10 +96,11 @@ void test_2(Node<int> * root)
     root->addNode(5);
     root->addNode(4);
     root->addNode(7);
-    root->drawTree();
-    char a;
-    cin >> a;
+    //root->drawTree();
+    //char a;
+    //cin >> a;
     root->leftTurn();
+    root->rightTurn();
     root->drawTree();
 }
 
