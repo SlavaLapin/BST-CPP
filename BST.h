@@ -1,11 +1,7 @@
 //
 // Created by slava on 24.04.19.
 //
-// todo balance (AVL Tree)
-// todo Menus can become structs arr of Opt{label, ControlModule(submenu obj)}, then menus are composed of a list of them, menu starts a new menu
-// ControlModule => Menu class, ControlModule => Tree functor class, Menus call the chosen functor;
-// TreeFunctors execute simple commands like add(Tree* root, value)
-// TreeFunctors need to be template functions to accept different types
+// todo balance (weight-balanced Tree)
 
 #ifndef WORKBENCH_BST_H
 #define WORKBENCH_BST_H
