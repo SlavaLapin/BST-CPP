@@ -338,12 +338,13 @@ public:
         }
     }
 
-    void print(const char& mode) const // l - leftside, r - rightside, c - center
+    void print(const char& mode) const // l - leftside(inorder), r - rightside(postorder), c - center(preorder)
     {
         if(empty) return;
         switch (mode)
         {
             case 'l':
+            case'i':
                 if (left != NULL) left->print(mode);
                 cout<<value_<<" ";
                 if (right != NULL) right->print(mode);
