@@ -46,7 +46,7 @@ struct NodeSVG
 
 template<class T>
 NodeSVG <T> **createRow(TreeData<T> const * const data, const int rowLevel, const int width) {
-    std::cout<<"Creating visual data for row: "<<rowLevel<<std::endl;
+    //std::cout<<"Creating visual data for row: "<<rowLevel<<std::endl;
     int rowNodes = data->nodesByLevel[rowLevel];
     NodeSVG<T> ** row = NULL;
     try{
@@ -64,7 +64,6 @@ NodeSVG <T> **createRow(TreeData<T> const * const data, const int rowLevel, cons
         Point bottomLeftCorner = Point( (gapHorForRow*(i+1)+_BLOCK_WIDTH*i), (100 + VERTICAL_GAP * (data->levels - rowLevel) + BLOCK_HEIGHT * (data->levels - rowLevel - 1)) );
         row[i] = new NodeSVG<T>(bottomLeftCorner, data->nodeDataArray[rowLevel][i]);
     }
-    std::cout<<"Created succesfully"<<std::endl;
     return row;
 }
 
@@ -146,12 +145,10 @@ static void drawTreeSVG(TreeData<T> const * const data) {
     int width = ((data->mostNodesOnLevel + 1) * MINIMAL_GAP) + (data->mostNodesOnLevel * _BLOCK_WIDTH);
     Dimensions dimensions(width, height);
     Document doc("BST.svg", Layout(dimensions));
-    std::cout<<"Document has been created"<<std::endl;
 
     Polygon border(Stroke(5, Color::Black));
     border << Point(0, 0) << Point (0, height) << Point(width, height) << Point(width, 0) << Point (0,0);
     doc << border;
-    std::cout<<"border drawn"<<std::endl;
 
     // create a row of ** data
     NodeSVG<T> ** above = NULL;
@@ -165,10 +162,10 @@ static void drawTreeSVG(TreeData<T> const * const data) {
         {
             above = createRow(data, i-1, width); // fails to create the row below first element if I add 13th node
             if(above == NULL){std::cout<<"Drawing block row alloc error"<<std::endl; return;}
-            std::cout<<"Drawing connections for rows "<<i<<" and "<<i-1<<std::endl;
+            //std::cout<<"Drawing connections for rows "<<i<<" and "<<i-1<<std::endl;
             DrawConnections(doc, row, above, data->nodesByLevel[i], data->nodesByLevel[i-1]);
         }
-        std::cout<<"Drawing row "<<i<<std::endl;
+        //std::cout<<"Drawing row "<<i<<std::endl;
         DrawRow(doc, row, data->nodesByLevel[i]);
 
         deleteRow(row, data->nodesByLevel[i]);

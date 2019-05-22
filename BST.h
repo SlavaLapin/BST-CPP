@@ -142,6 +142,8 @@ class Node
 
     TreeData<T> * survey() const
     {
+        if (empty){ return nullptr;} //empty tree
+
         int size = weightLeft + weightRight + 1;
         NodeData<T> * allNodes = NULL;
         try {
@@ -431,16 +433,16 @@ public:
 
     void drawTree() const
     {
-        std::cout<<"Drawing a tree method"<<std::endl;
+        //std::cout<<"Drawing a tree method"<<std::endl;
         TreeData<T> * data = this->survey();
-        if(data == NULL) return;
+        if(data == NULL){ std::cout<<"An empty tree cannot be drawn"<<std::endl; return; }
 
         drawTreeDEBUG(data);
         drawTreeSVG(data);
-        std::cout<<"Drawing done. Deleting data"<<std::endl;
+        //std::cout<<"Drawing done. Deleting data"<<std::endl;
 
         delete data;
-        std::cout<<"drawTree method done its job"<<std::endl;
+        std::cout<<"SVG created successfully."<<std::endl;
     }
 
 };
