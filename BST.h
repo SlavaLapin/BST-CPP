@@ -14,6 +14,9 @@
 
 using namespace std;
 
+const int DELTA = 3;
+const int GAMMA = 2;
+
 template <class T>
 class Node
 {
@@ -27,7 +30,7 @@ class Node
 
     Node* addNode(const T& value)
     {
-        if(empty) {value_ = value; empty = false; return this;} // root. for now
+        if(empty) {value_ = value; empty = false; return NULL;} // root. for now
         if (value == value_) return NULL;
         if (value > value_)
         {
@@ -35,7 +38,7 @@ class Node
             if (right == NULL)
             {
                 right = new Node(value, this);
-                return this; //this node has just gave birth to a child
+                return this->parent; //this node has just gave birth to a child
             }
             else return right->addNode(value);
         }
@@ -45,8 +48,7 @@ class Node
             if(left==NULL)
             {
                 left = new Node(value, this);
-                // ++weightLeft;
-                return this; //this node has just gave birth to a child
+                return this->parent; //this node has just gave birth to a child
             }
             else return left->addNode(value);
         }
@@ -137,7 +139,20 @@ class Node
 
     void balance()
     {
-        cout<<"Just pretending for now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
+        cout<<"Not pretending now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
+        if( (weightLeft + 1)  <= ((weightRight + 1) * DELTA) ) //left-heavy
+        {
+            if ( ((this->right->weightRight + 1) * GAMMA) >= (this->right->weightLeft + 1) )
+                this->rotateLeft();
+            else
+                this->rotateLR();
+        } else
+        { // right-heavy
+            if ( ((this->left->weightLeft + 1) * GAMMA) >= (this->left->weightRight + 1) )
+                this->rotateRight();
+            else
+                this->rotateRL();
+        }
         if (this->parent != NULL) this->parent->balance();
     }
 
@@ -248,7 +263,7 @@ class Node
         this->rotateLeft();
     }
 
-    void rotationRL()
+    void rotateRL()
     {
         this->left->rotateLeft();
         this->rotateRight();
