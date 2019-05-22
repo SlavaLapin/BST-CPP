@@ -90,6 +90,7 @@ class Node
 
     Node* hangNodes(Node * migrant)
     {
+        if (migrant == NULL) return NULL;
         if (migrant->value_ > this->value_) // to be hanged on the right
         {
             this->weightRight+=migrant->weightLeft;
