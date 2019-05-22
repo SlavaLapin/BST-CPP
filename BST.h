@@ -159,9 +159,10 @@ class Node
         }
     }
 
-    void leftTurn()
+    void rotateLeft()
     {
         Node<T> * pivot = this->right;
+        if ( pivot == NULL ) return;
         Node<T> * pivotRightChild = pivot->right;
         Node<T> * pivotLeftChild = pivot->left;
         Node<T> * oldRootLeftChild = this->left;
@@ -174,21 +175,22 @@ class Node
         int tmp_w = this->weightLeft;
         this->weightLeft = this->weightRight;
 
-        this->right = pivot->right; // not NULL safe
-        this->right->parent = this; // not NULL safe
+        this->right = pivot->right;
+        if (this->right != NULL) this->right->parent = this; // not NULL safe
         this->weightRight = pivot->weightRight;
 
-        pivot->right = pivot->left; // somewhat not NULL safe
+        pivot->right = pivot->left;
         pivot->weightRight = pivot->weightLeft;
-        pivot->left = oldRootLeftChild; // not NULL safe
-        pivot->left->parent = pivot; // not NULL safe
+        pivot->left = oldRootLeftChild;
+        if (pivot->left != NULL){ pivot->left->parent = pivot; this->weightRight++;} // not NULL safe
         pivot->weightLeft = tmp_w;
 
     }
 
-    void rightTurn()
+    void rotateRight()
     {
         Node<T> * pivot = this->left;
+        if ( pivot == NULL ) return;
         Node<T> * pivotRightChild = pivot->right;
         Node<T> * pivotLeftChild = pivot->left;
         Node<T> * oldRootRightChild = this->right;
@@ -201,15 +203,27 @@ class Node
         int tmp_w = this->weightRight;
         this->weightRight = this->weightLeft;
 
-        this->left = pivot->left; // not NULL safe
-        this->left->parent = this; // not NULL safe
+        this->left = pivot->left;
+        if (this->left != NULL) this->left->parent = this; // not NULL safe
         this->weightLeft = pivot->weightLeft;
 
-        pivot->left = pivot->right; // somewhat not NULL safe
+        pivot->left = pivot->right;
         pivot->weightLeft = pivot->weightRight;
-        pivot->right = oldRootRightChild; // not NULL safe
-        pivot->right->parent = pivot; // not NULL safe
+        pivot->right = oldRootRightChild;
+        if (pivot->right != NULL){ pivot->right->parent = pivot; this->weightLeft++;} // not NULL safe
         pivot->weightRight = tmp_w;
+    }
+
+    void rotateLR()
+    {
+        this->right->rotateRight();
+        this->rotateLeft();
+    }
+
+    void rotationRL()
+    {
+        this->left->rotateLeft();
+        this->rotateRight();
     }
 
 public:
@@ -233,6 +247,7 @@ public:
         this->parent = original.parent;
         this->weightLeft = original.weightLeft;
         this->weightRight = original.weightRight;
+        this->empty = original.empty;
     }
 
     Node& operator=(const Node& original)
@@ -422,6 +437,21 @@ public:
 
         delete data;
         std::cout<<"drawTree method done its job"<<std::endl;
+    }
+
+    void test_NULL_turns(){
+        char t;
+        this->leftTurn();
+        this->drawTree();
+        cin >> t;
+        this->rightTurn();
+        this->drawTree();
+        cin >> t;
+        this->rightTurn();
+        this->drawTree();
+        cin >> t;
+        this->rightTurn();
+        this->drawTree();
     }
 };
 

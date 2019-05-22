@@ -3,8 +3,6 @@
 
 using namespace std;
 
-// !!! TODO NULL-protect rotation functions!!!!
-// TODO Double-rotations?
 // TODO Determine rotation criteria?
 // TODO test trees of different types
 // TODO findmax(), findmin()
@@ -15,7 +13,7 @@ int splashMainMenu()
 {
     int inp = -1;
     cout<<endl;
-    cout<<"-- This is TreeInterface --"<<endl<< "Select an option:"<<endl;
+    cout<<"-- TreeInterface --"<<endl<< "Select an option:"<<endl;
     cout<<"1. Add value to the tree."<<endl;
     cout<<"2. Remove a value from the tree."<<endl;
     cout<<"3. Check if a value is already in the tree."<<endl;
@@ -97,10 +95,18 @@ void test_1(Node<int> * root)
     root->drawTree();
 }
 
+void roatation_safety_test(Node<int> * root)
+{
+    root->addNode(5);
+    root->addNode(4);
+    root->addNode(6);
+    root->test_NULL_turns();
+}
+
 int main() {
     auto * root = new Node<int>;
 
-    //test_1(root);
+    roatation_safety_test(root);
     menu(root);
 
     delete root;
