@@ -140,19 +140,19 @@ class Node
     void balance()
     {
         cout<<"Not pretending now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
-        if( (weightLeft + 1)  <= ((weightRight + 1) * DELTA) ) //left-heavy
+        if( (weightLeft + 1)  > ((weightRight + 1) * DELTA) ) //left-heavy
         {
-            if ( ((this->right->weightRight + 1) * GAMMA) >= (this->right->weightLeft + 1) )
-                this->rotateLeft();
-            else
-                this->rotateLR();
-        } else
-        { // right-heavy
-            if ( ((this->left->weightLeft + 1) * GAMMA) >= (this->left->weightRight + 1) )
+            if ( ((this->left->weightLeft + 1) * GAMMA) < (this->left->weightRight + 1) )
                 this->rotateRight();
             else
                 this->rotateRL();
-        }
+        } else if ( (weightLeft + 1)  <= ((weightRight + 1) * DELTA) ){
+        { // right-heavy
+            if ( ((this->right->weightRight + 1) * GAMMA) < (this->right->weightLeft + 1) )
+                this->rotateLeft();
+            else
+                this->rotateLR();
+        }}
         if (this->parent != NULL) this->parent->balance();
     }
 
@@ -204,6 +204,7 @@ class Node
 
     void rotateLeft()
     {
+        cout<<"left rot";
         Node<T> * pivot = this->right;
         if ( pivot == NULL ) return;
         Node<T> * pivotRightChild = pivot->right;
@@ -232,6 +233,7 @@ class Node
 
     void rotateRight()
     {
+        cout<<"right rot";
         Node<T> * pivot = this->left;
         if ( pivot == NULL ) return;
         Node<T> * pivotRightChild = pivot->right;
@@ -259,12 +261,14 @@ class Node
 
     void rotateLR()
     {
+        cout<<"LR rot";
         this->right->rotateRight();
         this->rotateLeft();
     }
 
     void rotateRL()
     {
+        cout<<"RL rot";
         this->left->rotateLeft();
         this->rotateRight();
     }

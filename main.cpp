@@ -97,8 +97,9 @@ void test_1(Node<int> * root)
 }
 
 int main() {
-    auto * root = new Node<string>;
+    auto * root = new Node<int>;
 
+    test_1(root);
     menu(root);
 
     delete root;
