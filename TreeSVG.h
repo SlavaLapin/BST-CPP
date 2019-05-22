@@ -17,11 +17,12 @@ const int MINIMAL_GAP = 100;
 const int VERTICAL_GAP = 100;
 const int BLOCK_HEIGHT = 100;
 const int _BLOCK_WIDTH = 200;
-const int _PADDING_X = 100;
+const int _PADDING_X = _BLOCK_WIDTH / 2;
 const int _PADDING_Y = -57;
-const int PADDING_PER_SYMBOL = 8;
+const int PADDING_PER_SYMBOL = 7;
 const int _FONT_SIZE = 26;
 const int LINE_WIDTH = 5;
+const int BLOCK_BORDER_WIDTH = 2;
 
 template<class type>
 std::string to_string(const type &value)
@@ -114,6 +115,19 @@ void DrawRow(Document &doc, NodeSVG<T> ** const row, const int rowLen)
     for (int i = 0; i < rowLen; ++i)
     {
         doc << Rectangle(row[i]->origin, _BLOCK_WIDTH, BLOCK_HEIGHT, Color::Yellow);
+
+        Polygon blockBorder(Stroke(BLOCK_BORDER_WIDTH, Color::Black));
+        Point bottomleft = row[i]->origin;
+        Point topleft = row[i]->origin;
+        topleft.y -= BLOCK_HEIGHT;
+        Point topright = row[i]->origin;
+        topright.y -= BLOCK_HEIGHT;
+        topright.x += _BLOCK_WIDTH;
+        Point bottomright = row[i]->origin;
+        bottomright.x += _BLOCK_WIDTH;
+        blockBorder <<  bottomleft << topleft << topright << bottomright << bottomleft;
+        doc << blockBorder;
+
         Text str = Text(row[i]->origin, row[i]->valueStr, Color::Black, Font(_FONT_SIZE, "Verdana"));
         int x_offset = _PADDING_X - (row[i]->valueStr.length()) * PADDING_PER_SYMBOL;
         str.offset(Point(x_offset, _PADDING_Y));
