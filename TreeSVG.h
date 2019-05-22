@@ -17,8 +17,9 @@ const int MINIMAL_GAP = 100;
 const int VERTICAL_GAP = 100;
 const int BLOCK_HEIGHT = 100;
 const int _BLOCK_WIDTH = 200;
-const int _PADDING_X = 15;
+const int _PADDING_X = 100;
 const int _PADDING_Y = -57;
+const int PADDING_PER_SYMBOL = 8;
 const int _FONT_SIZE = 26;
 const int LINE_WIDTH = 5;
 
@@ -112,9 +113,10 @@ void DrawRow(Document &doc, NodeSVG<T> ** const row, const int rowLen)
 {
     for (int i = 0; i < rowLen; ++i)
     {
-        doc << Rectangle(row[i]->origin, _BLOCK_WIDTH, BLOCK_HEIGHT, Color::Silver);
-        Text str = Text(row[i]->origin, row[i]->valueStr, Color::Fuchsia, Font(_FONT_SIZE, "Verdana"));
-        str.offset(Point(_PADDING_X, _PADDING_Y));
+        doc << Rectangle(row[i]->origin, _BLOCK_WIDTH, BLOCK_HEIGHT, Color::Yellow);
+        Text str = Text(row[i]->origin, row[i]->valueStr, Color::Black, Font(_FONT_SIZE, "Verdana"));
+        int x_offset = _PADDING_X - (row[i]->valueStr.length()) * PADDING_PER_SYMBOL;
+        str.offset(Point(x_offset, _PADDING_Y));
         doc << str;
     }
     //maybe a border

@@ -22,6 +22,7 @@ struct NodeData{
         id = -1;
         parentId = -1;
         level = -1;
+        leftChild = false;
     };
 
     NodeData(T val, int id, int parent, bool left, int level):
@@ -104,7 +105,7 @@ private:
 
     int * _countByLevel(NodeData<T> const * list) const
     {
-        int *countByLevel = NULL;
+        int *countByLevel = nullptr;
 
         try {
             countByLevel =  new int[this->levels];
