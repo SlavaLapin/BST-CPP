@@ -136,9 +136,7 @@ class Node
 
     void balance()
     {
-        int nothing;
         cout<<"Just pretending for now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
-        cin>>nothing;
         if (this->parent != NULL) this->parent->balance();
     }
 
@@ -305,7 +303,7 @@ public:
         {
             if ((toDelete->weightRight == 0) && (toDelete->weightLeft == 0)) // Deleting a lonely root
             {
-                this->value_ = 0;
+                //this->value_ = 0;
                 this->empty = true;
                 return;
             }

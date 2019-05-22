@@ -1,10 +1,11 @@
 #include <iostream>
 #include "BST.h"
 
+#include <string>
+
 using namespace std;
 
 // TODO Determine rotation criteria?
-// TODO test trees of different types
 // TODO findmax(), findmin()
 // TODO splitOn()
 // TODO print study, walk through with highlights
@@ -96,7 +97,7 @@ void test_1(Node<int> * root)
 }
 
 int main() {
-    auto * root = new Node<int>;
+    auto * root = new Node<string>;
 
     menu(root);
 

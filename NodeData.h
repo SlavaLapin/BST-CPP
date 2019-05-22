@@ -17,8 +17,12 @@ struct NodeData{
 
     int level;
 
-    NodeData():
-    value(-1), id(-1), parentId(-1), leftChild(false), level(-1) {};
+    NodeData()
+    {
+        id = -1;
+        parentId = -1;
+        level = -1;
+    };
 
     NodeData(T val, int id, int parent, bool left, int level):
     value(val), id(id), parentId(parent), leftChild(left), level(level) {};
