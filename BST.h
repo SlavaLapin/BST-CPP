@@ -445,20 +445,6 @@ public:
         std::cout<<"drawTree method done its job"<<std::endl;
     }
 
-    void test_NULL_turns(){
-        char t;
-        this->leftTurn();
-        this->drawTree();
-        cin >> t;
-        this->rightTurn();
-        this->drawTree();
-        cin >> t;
-        this->rightTurn();
-        this->drawTree();
-        cin >> t;
-        this->rightTurn();
-        this->drawTree();
-    }
 };
 
 #endif //WORKBENCH_BST_H

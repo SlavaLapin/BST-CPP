@@ -95,18 +95,9 @@ void test_1(Node<int> * root)
     root->drawTree();
 }
 
-void roatation_safety_test(Node<int> * root)
-{
-    root->add(5);
-    root->add(4);
-    root->add(6);
-    root->test_NULL_turns();
-}
-
 int main() {
     auto * root = new Node<int>;
 
-    roatation_safety_test(root);
     menu(root);
 
     delete root;
