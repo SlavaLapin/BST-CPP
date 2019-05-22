@@ -38,7 +38,7 @@ void menu(Node<T> * root)
             case 1:
                 cout<<"What value do you want to add?"<<endl;
                 cin>>val;
-                root->addNode(val);
+                root->add(val);
                 cout<<"Done!";
                 break;
             case 2:
@@ -72,34 +72,34 @@ void menu(Node<T> * root)
 
 void test_1(Node<int> * root)
 {
-    root->addNode(2);
-    root->addNode(5);
-    root->addNode(4);
-    root->addNode(1);
-    root->addNode(6);
-    root->addNode(10);
-    root->addNode(8);
-    root->addNode(9);
-    root->addNode(7);
-    root->addNode(12);
-    root->addNode(14);
-    root->addNode(3);
-    root->addNode(100);
-    root->addNode(90);
-    root->addNode(88);
-    root->addNode(82);
-    root->addNode(64);
-    root->addNode(50);
-    root->addNode(102);
-    root->addNode(56);
+    root->add(2);
+    root->add(5);
+    root->add(4);
+    root->add(1);
+    root->add(6);
+    root->add(10);
+    root->add(8);
+    root->add(9);
+    root->add(7);
+    root->add(12);
+    root->add(14);
+    root->add(3);
+    root->add(100);
+    root->add(90);
+    root->add(88);
+    root->add(82);
+    root->add(64);
+    root->add(50);
+    root->add(102);
+    root->add(56);
     root->drawTree();
 }
 
 void roatation_safety_test(Node<int> * root)
 {
-    root->addNode(5);
-    root->addNode(4);
-    root->addNode(6);
+    root->add(5);
+    root->add(4);
+    root->add(6);
     root->test_NULL_turns();
 }
 

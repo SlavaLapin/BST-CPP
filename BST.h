@@ -25,6 +25,33 @@ class Node
     Node* left;
     Node* right;
 
+    Node* addNode(const T& value)
+    {
+        if(empty) {value_ = value; empty = false; return this;} // root. for now
+        if (value == value_) return NULL;
+        if (value > value_)
+        {
+            this->weightRight++;
+            if (right == NULL)
+            {
+                right = new Node(value, this);
+                return this; //this node has just gave birth to a child
+            }
+            else return right->addNode(value);
+        }
+        else
+        {
+            this->weightLeft++;
+            if(left==NULL)
+            {
+                left = new Node(value, this);
+                // ++weightLeft;
+                return this; //this node has just gave birth to a child
+            }
+            else return left->addNode(value);
+        }
+    }
+
     void _parentWeightDecrease()
     {
         if (this->parent == NULL) return; // reached root
@@ -263,31 +290,10 @@ public:
         return *this;
     }
 
-    Node* addNode(const T& value)
+    void add(const T& value)
     {
-        if(empty) {value_ = value; empty = false; return this;} // root. for now
-        if (value == value_) return NULL;
-        if (value > value_)
-        {
-            this->weightRight++;
-            if (right == NULL)
-            {
-                right = new Node(value, this);
-                return this; //this node has just gave birth to a child
-            }
-            else return right->addNode(value);
-        }
-        else
-        {
-            this->weightLeft++;
-            if(left==NULL)
-            {
-                left = new Node(value, this);
-                // ++weightLeft;
-                return this; //this node has just gave birth to a child
-            }
-            else return left->addNode(value);
-        }
+        Node<T> * changePoint = addNode(value);
+        if (changePoint != NULL) changePoint->balance();
     }
     
     void rm(const T& value)
