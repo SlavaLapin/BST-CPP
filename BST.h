@@ -143,15 +143,15 @@ class Node
         if( (weightLeft + 1)  > ((weightRight + 1) * DELTA) ) //left-heavy
         {
             if ( ((this->left->weightLeft + 1) * GAMMA) < (this->left->weightRight + 1) )
-                this->rotateRight();
-            else
                 this->rotateRL();
-        } else if ( (weightLeft + 1)  <= ((weightRight + 1) * DELTA) ){
+            else
+                this->rotateRight();
+        } else if ( (weightRight + 1)  > ((weightLeft + 1) * DELTA) ){
         { // right-heavy
             if ( ((this->right->weightRight + 1) * GAMMA) < (this->right->weightLeft + 1) )
-                this->rotateLeft();
-            else
                 this->rotateLR();
+            else
+                this->rotateLeft();
         }}
         if (this->parent != NULL) this->parent->balance();
     }
@@ -172,8 +172,11 @@ class Node
         }
         int count = -1;
         int * counter = &count;
+        cout<<"Calling all nodes. - "<<endl;
         this->submitData(allNodes, counter, 0, -1, false);
+        cout<<" All nodes responded"<<endl;
 
+        cout<<"got to the point of creating TreeData";
         TreeData<T> * data = NULL;
         try
         {
@@ -189,7 +192,9 @@ class Node
     void submitData(NodeData<T> * allNodes, int * const counter, const int myLevel, const int myParent, const bool amILeft) const
     {
         ++(*counter);
+        cout<<"Trying to submit data for node "<<*counter<<" value: "<<this->value_<<" on level: "<<myLevel<<" wl:"<<weightLeft<<" wr:"<<weightRight<<" - ";
         allNodes[*counter] = NodeData<T>(value_, *counter, myParent, amILeft, myLevel);
+        cout<<"done"<<endl;
         int myId = *counter;
 
         if (left != NULL)
@@ -200,6 +205,7 @@ class Node
         {
             right->submitData(allNodes, counter, myLevel+1, myId, false);
         }
+        cout<<" - recursion exit - I'm node: "<<myId<<endl;
     }
 
     void rotateLeft()
@@ -211,22 +217,29 @@ class Node
         Node<T> * pivotLeftChild = pivot->left;
         Node<T> * oldRootLeftChild = this->left;
 
+        // 1
         T tmp = this->value_;
         this->value_ = pivot->value_;
         pivot->value_ = tmp;
 
+        // 2
         this->left = this->right;
         int tmp_w = this->weightLeft;
         this->weightLeft = this->weightRight;
 
+        // 3
         this->right = pivot->right;
         if (this->right != NULL) this->right->parent = this; // not NULL safe
         this->weightRight = pivot->weightRight;
+        this->weightLeft -= this->weightRight;
 
+        // 4
         pivot->right = pivot->left;
         pivot->weightRight = pivot->weightLeft;
+
+        // 5
         pivot->left = oldRootLeftChild;
-        if (pivot->left != NULL){ pivot->left->parent = pivot; this->weightRight++;} // not NULL safe
+        if (pivot->left != NULL){ pivot->left->parent = pivot; this->weightRight+=tmp_w;} // not NULL safe
         pivot->weightLeft = tmp_w;
 
     }
@@ -240,22 +253,29 @@ class Node
         Node<T> * pivotLeftChild = pivot->left;
         Node<T> * oldRootRightChild = this->right;
 
+        // 1
         T tmp = this->value_;
         this->value_ = pivot->value_;
         pivot->value_ = tmp;
 
+        // 2
         this->right = this->left;
         int tmp_w = this->weightRight;
         this->weightRight = this->weightLeft;
 
+        // 3
         this->left = pivot->left;
         if (this->left != NULL) this->left->parent = this; // not NULL safe
         this->weightLeft = pivot->weightLeft;
+        this->weightRight -= this->weightLeft;
 
+        // 4
         pivot->left = pivot->right;
         pivot->weightLeft = pivot->weightRight;
+
+        // 5
         pivot->right = oldRootRightChild;
-        if (pivot->right != NULL){ pivot->right->parent = pivot; this->weightLeft++;} // not NULL safe
+        if (pivot->right != NULL){ pivot->right->parent = pivot; this->weightLeft+=tmp_w;} // not NULL safe
         pivot->weightRight = tmp_w;
     }
 
@@ -312,6 +332,7 @@ public:
 
     void add(const T& value)
     {
+        cout<<"Adding "<<value<<endl;
         Node<T> * changePoint = addNode(value);
         if (changePoint != NULL) changePoint->balance();
     }

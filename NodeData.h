@@ -49,6 +49,7 @@ struct TreeData{
 
     TreeData(NodeData<T> * list, int total)
     {
+        std::cout<<"Creating TreeData. Total nodes: "<<total<<std::endl;
         nodeCount = total;
         levels = _findMaxLevel(list);
         nodesByLevel = _countByLevel(list);
