@@ -5,10 +5,9 @@
 
 using namespace std;
 
-// TODO Determine rotation criteria?
 // TODO findmax(), findmin()
 // TODO splitOn()
-// TODO print study, walk through with highlights
+// TODO fix bugs
 
 int splashMainMenu()
 {
@@ -106,12 +105,36 @@ void test_1(Node<int> * root)
     root->drawTree();
 }
 
+void test_2(Node<int> * root)
+{
+    for(int i = 0; i < 100000; ++i)
+        root->add(i);
+    root->drawTree();
+}
+
+void test_3(Node<string> * root)
+{
+    root->add("Somebody");
+    root->add("once");
+    root->add("told");
+    root->add("me");
+    root->add("the");
+    root->add("world");
+    root->add("is");
+    root->add("gonna");
+    root->add("roll");
+    root->add("me");
+    root->drawTree();
+}
+
 int main() {
-    auto * root = new Node<int>;
+    auto * r = new Node<int>;
 
-    test_1(root);
-    menu(root);
+    //test_1(r);
+    test_2(r);
+    //test_3(r);
+    menu(r);
 
-    delete root;
+    delete r;
     return 0;
 }

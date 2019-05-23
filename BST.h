@@ -31,7 +31,7 @@ class Node
     Node* addNode(const T& value)
     {
         if(empty) {value_ = value; empty = false; return NULL;} // root. for now
-        if (value == value_) return NULL;
+        if (value == value_){ std::cout<<"Value already in the tree!"<<std::endl; this->_parentWeightDecrease(); return NULL; }
         if (value > value_)
         {
             this->weightRight++;
@@ -381,7 +381,7 @@ public:
 
         Node* balancingPoint = NULL;
 
-        if ((toDelete->weightRight == 0) && (toDelete->weightLeft == 0)) // leaf
+        if ((toDelete->weightRight == NULL) && (toDelete->weightLeft == NULL)) // leaf
         {
             if (leftChild)
             {
