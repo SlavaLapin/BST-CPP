@@ -7,7 +7,7 @@ using namespace std;
 
 // TODO findmax(), findmin()
 // TODO splitOn()
-// TODO fix bugs
+// TODO fix bugs (some deletions cause crashes)
 
 int splashMainMenu()
 {
@@ -107,7 +107,7 @@ void test_1(Node<int> * root)
 
 void test_2(Node<int> * root)
 {
-    for(int i = 0; i < 100000; ++i)
+    for(int i = 0; i < 100; ++i)
         root->add(i);
     root->drawTree();
 }
