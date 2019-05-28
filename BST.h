@@ -139,7 +139,7 @@ class Node
 
     void balance()
     {
-        cout<<"Not pretending now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
+        //cout<<"Not pretending now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
         if( (weightLeft + 1)  > ((weightRight + 1) * DELTA) ) //left-heavy
         {
             if ( ((this->left->weightLeft + 1) * GAMMA) < (this->left->weightRight + 1) )
@@ -172,11 +172,11 @@ class Node
         }
         int count = -1;
         int * counter = &count;
-        cout<<"Calling all nodes. - "<<endl;
+        //cout<<"Calling all nodes. - "<<endl;
         this->submitData(allNodes, counter, 0, -1, false);
-        cout<<" All nodes responded"<<endl;
+        //cout<<" All nodes responded"<<endl;
 
-        cout<<"got to the point of creating TreeData";
+        //cout<<"got to the point of creating TreeData";
         TreeData<T> * data = NULL;
         try
         {
@@ -192,9 +192,9 @@ class Node
     void submitData(NodeData<T> * allNodes, int * const counter, const int myLevel, const int myParent, const bool amILeft) const
     {
         ++(*counter);
-        cout<<"Trying to submit data for node "<<*counter<<" value: "<<this->value_<<" on level: "<<myLevel<<" wl:"<<weightLeft<<" wr:"<<weightRight<<" - ";
+        //cout<<"Trying to submit data for node "<<*counter<<" value: "<<this->value_<<" on level: "<<myLevel<<" wl:"<<weightLeft<<" wr:"<<weightRight<<" - ";
         allNodes[*counter] = NodeData<T>(value_, *counter, myParent, amILeft, myLevel);
-        cout<<"done"<<endl;
+        //cout<<"done"<<endl;
         int myId = *counter;
 
         if (left != NULL)
@@ -205,12 +205,12 @@ class Node
         {
             right->submitData(allNodes, counter, myLevel+1, myId, false);
         }
-        cout<<" - recursion exit - I'm node: "<<myId<<endl;
+        //cout<<" - recursion exit - I'm node: "<<myId<<endl;
     }
 
     void rotateLeft()
     {
-        cout<<"left rot";
+        //cout<<"left rot";
         Node<T> * pivot = this->right;
         if ( pivot == NULL ) return;
         Node<T> * pivotRightChild = pivot->right;
@@ -246,7 +246,7 @@ class Node
 
     void rotateRight()
     {
-        cout<<"right rot";
+        //cout<<"right rot";
         Node<T> * pivot = this->left;
         if ( pivot == NULL ) return;
         Node<T> * pivotRightChild = pivot->right;
@@ -281,14 +281,14 @@ class Node
 
     void rotateLR()
     {
-        cout<<"LR rot";
+        //cout<<"LR rot";
         this->right->rotateRight();
         this->rotateLeft();
     }
 
     void rotateRL()
     {
-        cout<<"RL rot";
+        //cout<<"RL rot";
         this->left->rotateLeft();
         this->rotateRight();
     }

@@ -107,7 +107,7 @@ void test_1(Node<int> * root)
 
 void test_2(Node<int> * root)
 {
-    for(int i = 0; i < 100; ++i)
+    for(int i = 0; i < 10; ++i)
         root->add(i);
     root->drawTree();
 }
@@ -131,7 +131,7 @@ int main() {
     auto * r = new Node<int>;
 
     //test_1(r);
-    test_2(r);
+    //test_2(r);
     //test_3(r);
     menu(r);
 
