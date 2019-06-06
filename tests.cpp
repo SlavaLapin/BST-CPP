@@ -29,8 +29,11 @@ void testBalanceManyElements(int elements) {
     {
         root->add(i);
         root->drawTree("balancerun" + std::to_string(i));
+        for (int j = 0; j <= i; ++j)
+            root->doesNodeExist(j);
     }
     root->drawTree("TestResultBalancing");
+    root->doesNodeExist(19);
     delete root;
 }
 

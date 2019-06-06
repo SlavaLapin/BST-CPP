@@ -212,7 +212,7 @@ class Node
 
     void rotateLeft()
     {
-        //cout<<"left rot";
+        cout<<"left rot"<<endl;
         Node<T> * pivot = this->right;
         if ( pivot == NULL ) return;
         Node<T> * pivotRightChild = pivot->right;
@@ -228,6 +228,7 @@ class Node
         this->left = this->right;
         int tmp_w = this->weightLeft;
         this->weightLeft = this->weightRight;
+        if (this->left != NULL) this->left->weightRight = pivot->weightLeft;
 
         // 3
         this->right = pivot->right;
@@ -248,7 +249,7 @@ class Node
 
     void rotateRight()
     {
-        //cout<<"right rot";
+        cout<<"right rot"<<endl;
         Node<T> * pivot = this->left;
         if ( pivot == NULL ) return;
         Node<T> * pivotRightChild = pivot->right;
@@ -264,6 +265,7 @@ class Node
         this->right = this->left;
         int tmp_w = this->weightRight;
         this->weightRight = this->weightLeft;
+        if (this->right != NULL) this->right->weightLeft = pivot->weightRight;
 
         // 3
         this->left = pivot->left;
@@ -481,7 +483,7 @@ public:
         if(data == NULL){ std::cout<<"An empty tree cannot be drawn"<<std::endl; return; }
 
         drawTreeDEBUG(data);
-        drawTreeSVG(data, filename);
+        //drawTreeSVG(data, filename);
         //std::cout<<"Drawing done. Deleting data"<<std::endl;
 
         delete data;

@@ -75,7 +75,7 @@ void runTests()
 {
     //testDouble();
     //testString();
-    testBalanceManyElements(31);
+    testBalanceManyElements(23);
     //testCustomStruct();
 }
 
