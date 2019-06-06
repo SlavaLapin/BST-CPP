@@ -472,14 +472,14 @@ public:
         }
     }
 
-    void drawTree() const
+    void drawTree(std::string filename) const
     {
         //std::cout<<"Drawing a tree method"<<std::endl;
         TreeData<T> * data = this->survey();
         if(data == NULL){ std::cout<<"An empty tree cannot be drawn"<<std::endl; return; }
 
         drawTreeDEBUG(data);
-        drawTreeSVG(data);
+        drawTreeSVG(data, filename);
         //std::cout<<"Drawing done. Deleting data"<<std::endl;
 
         delete data;

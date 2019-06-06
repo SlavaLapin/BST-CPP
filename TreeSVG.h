@@ -136,7 +136,7 @@ void DrawRow(Document &doc, NodeSVG<T> ** const row, const int rowLen)
 }
 
 template<typename T>
-static void drawTreeSVG(TreeData<T> const * const data) {
+static void drawTreeSVG(TreeData<T> const * const data, std::string filename) {
     if (data == NULL) { std::cout<<"Empty TreeData pointer!"<<std::endl; return;}
     if (data->levels < 1) {std::cout<<"An empty tree cannot be drawn"<<std::endl; return;}
 
@@ -144,7 +144,8 @@ static void drawTreeSVG(TreeData<T> const * const data) {
     int height = ((data->levels + 1) * VERTICAL_GAP) + (data->levels * BLOCK_HEIGHT);
     int width = ((data->mostNodesOnLevel + 1) * MINIMAL_GAP) + (data->mostNodesOnLevel * _BLOCK_WIDTH);
     Dimensions dimensions(width, height);
-    Document doc("BST.svg", Layout(dimensions));
+    filename += ".svg";
+    Document doc(filename, Layout(dimensions));
 
     Polygon border(Stroke(5, Color::Black));
     border << Point(0, 0) << Point (0, height) << Point(width, height) << Point(width, 0) << Point (0,0);

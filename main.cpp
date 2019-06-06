@@ -2,16 +2,16 @@
 #include "BST.h"
 
 #include <string>
+#include <time.h>
+#include "tests.h"
 
 using namespace std;
 
-// TODO findmax(), findmin()
-// TODO splitOn()
 // TODO fix bugs (some deletions cause crashes)
 
-int splashMainMenu()
+short splashMainMenu()
 {
-    int inp = -1;
+    short inp = -1;
     cout<<endl;
     cout<<"-- TreeInterface --"<<endl<< "Select an option:"<<endl;
     cout<<"1. Add value to the tree."<<endl;
@@ -30,6 +30,7 @@ void menu(Node<T> * root)
 {
     T val;
     short userMenuSelection = 0;
+    int t = time(NULL);
     while(userMenuSelection != -1)
     {
         userMenuSelection = splashMainMenu();
@@ -61,7 +62,7 @@ void menu(Node<T> * root)
                 cout<<"Done!";
                 break;
             case 5:
-                root->drawTree();
+                root->drawTree(std::to_string(t));
                 break;
             default:
                 cout<<endl;
@@ -70,69 +71,19 @@ void menu(Node<T> * root)
     cout<<"FIN.";
 }
 
-void test_1(Node<int> * root)
+void runTests()
 {
-    root->add(2);
-    root->add(5);
-    root->add(4);
-    root->add(1);
-    root->add(6);
-    root->add(10);
-    root->add(8);
-    root->drawTree();
-    int i;
-    cin >> i;
-    root->add(9);
-    root->drawTree();
-    // it fails at the above point. No rotations before it. After rotating total is 12, not 8 as supposed to be.
-    root->add(7);
-    root->drawTree();
-    root->add(12);
-    root->add(14);
-    root->add(3);
-    root->drawTree();
-    root->add(100);
-    root->add(90);
-    root->add(88);
-    root->drawTree();
-    root->add(82);
-    root->add(64);
-    root->add(50);
-    root->drawTree();
-    root->add(102);
-    root->add(56);
-    root->print('l');
-    root->drawTree();
-}
-
-void test_2(Node<int> * root)
-{
-    for(int i = 0; i < 10; ++i)
-        root->add(i);
-    root->drawTree();
-}
-
-void test_3(Node<string> * root)
-{
-    root->add("Somebody");
-    root->add("once");
-    root->add("told");
-    root->add("me");
-    root->add("the");
-    root->add("world");
-    root->add("is");
-    root->add("gonna");
-    root->add("roll");
-    root->add("me");
-    root->drawTree();
+    testDouble();
+    testString();
+    testBalanceManyElements(30);
+    //testCustomStruct();
 }
 
 int main() {
-    auto * r = new Node<int>;
 
-    //test_1(r);
-    //test_2(r);
-    //test_3(r);
+    runTests();
+
+    auto * r = new Node<int>;
     menu(r);
 
     delete r;
