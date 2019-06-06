@@ -26,7 +26,10 @@ void testString() {
 void testBalanceManyElements(int elements) {
     auto * root = new Node<int>;
     for(int i = 0; i < elements; ++i)
+    {
         root->add(i);
+        root->drawTree("balancerun" + std::to_string(i));
+    }
     root->drawTree("TestResultBalancing");
     delete root;
 }

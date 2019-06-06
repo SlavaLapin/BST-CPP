@@ -14,7 +14,7 @@ using namespace svg;
 
 
 const int MINIMAL_GAP = 100;
-const int VERTICAL_GAP = 100;
+const int VERTICAL_GAP = 200;
 const int BLOCK_HEIGHT = 100;
 const int _BLOCK_WIDTH = 200;
 const int _PADDING_X = _BLOCK_WIDTH / 2;
