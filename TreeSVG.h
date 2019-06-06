@@ -127,7 +127,7 @@ void DrawRow(Document &doc, NodeSVG<T> ** const row, const int rowLen)
         blockBorder <<  bottomleft << topleft << topright << bottomright << bottomleft;
         doc << blockBorder;
 
-        Text str = Text(row[i]->origin, row[i]->valueStr, Color::Black, Font(_FONT_SIZE, "Verdana"));
+        Text str = Text(row[i]->origin, row[i]->valueStr, Color::Black, Font(_FONT_SIZE, "Courier New"));
         int x_offset = _PADDING_X - (row[i]->valueStr.length()) * PADDING_PER_SYMBOL;
         str.offset(Point(x_offset, _PADDING_Y));
         doc << str;

@@ -73,9 +73,9 @@ void menu(Node<T> * root)
 
 void runTests()
 {
-    //testDouble();
-    //testString();
-    //testBalanceManyElements(30);
+    testDouble();
+    testString();
+    testBalanceManyElements(30);
     testCustomStruct();
 }
 
