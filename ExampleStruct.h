@@ -11,8 +11,14 @@
 struct ExampleStructStudent{
     std::string name;
     float points;
-    ExampleStructStudent(std::string name = 0, float points = 0): name(name), points(points) {}
+    ExampleStructStudent(std::string name = "nobody", float points = 0): name(name), points(points) {}
 
+    ExampleStructStudent& operator= (const ExampleStructStudent& original)
+    {
+        this->name = original.name;
+        this->points = original.points;
+        return *this;
+    }
 };
 
 bool operator< (const ExampleStructStudent& left, const ExampleStructStudent& right)
