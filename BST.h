@@ -6,16 +6,18 @@
 #ifndef WORKBENCH_BST_H
 #define WORKBENCH_BST_H
 
+#include <math.h>
 #include <vector>
 #include <string>
 #include <iostream>
 #include "NodeData.h"
 #include "TreeSVG.h"
 
+
 using namespace std;
 
-const int DELTA = 3;
-const int GAMMA = 2;
+const double DELTA = 1 + sqrt(2);
+const double GAMMA = sqrt(2);
 
 template <class T>
 class Node
@@ -139,7 +141,7 @@ class Node
 
     void balance()
     {
-        //cout<<"Not pretending now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
+        cout<<"Not pretending now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
         if( (weightLeft + 1)  > ((weightRight + 1) * DELTA) ) //left-heavy
         {
             if ( ((this->left->weightLeft + 1) * GAMMA) < (this->left->weightRight + 1) )

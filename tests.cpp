@@ -46,7 +46,6 @@ void testDouble() {
 
 void testCustomStruct()
 {
-    std::cout<<"outoforderexecutionmyass";
     auto * root = new Node<ExampleStructStudent>;
     root->add(ExampleStructStudent("Alice", 90.0));
     root->add(ExampleStructStudent("Bob", 74.6));
