@@ -212,7 +212,6 @@ class Node
 
     void rotateLeft()
     {
-        cout<<"left rot"<<endl;
         Node<T> * pivot = this->right;
         if ( pivot == NULL ) return;
         Node<T> * pivotRightChild = pivot->right;
@@ -249,7 +248,6 @@ class Node
 
     void rotateRight()
     {
-        cout<<"right rot"<<endl;
         Node<T> * pivot = this->left;
         if ( pivot == NULL ) return;
         Node<T> * pivotRightChild = pivot->right;
@@ -285,14 +283,12 @@ class Node
 
     void rotateLR()
     {
-        cout<<"LR rot";
         this->right->rotateRight();
         this->rotateLeft();
     }
 
     void rotateRL()
     {
-        cout<<"RL rot";
         this->left->rotateLeft();
         this->rotateRight();
     }
