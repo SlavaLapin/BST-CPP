@@ -141,7 +141,7 @@ class Node
 
     void balance()
     {
-        cout<<"Checking balance now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
+        //cout<<"Checking balance now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
         if( (weightLeft + 1)  > ((weightRight + 1) * DELTA) ) //left-heavy
         {
             if ( ((this->left->weightLeft + 1) * GAMMA) < (this->left->weightRight + 1) )
@@ -487,7 +487,6 @@ public:
         //std::cout<<"Drawing done. Deleting data"<<std::endl;
 
         delete data;
-        std::cout<<"Drawn."<<std::endl;
     }
 
 };

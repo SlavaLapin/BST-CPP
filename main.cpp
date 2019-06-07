@@ -73,10 +73,10 @@ void menu(Node<T> * root)
 
 void runTests()
 {
-    //testDouble();
-    //testString();
-    testBalanceManyElements(23);
-    //testCustomStruct();
+    testDouble();
+    testString();
+    testBalanceManyElements(31);
+    testCustomStruct();
 }
 
 int main() {

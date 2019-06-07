@@ -174,8 +174,11 @@ static void drawTreeSVG(TreeData<T> const * const data, std::string filename) {
     }
     //deleteRow(row, 1); // top row always consists of 1 node
 
-    std::cout<<"saving..."<<std::endl;
-    doc.save();
+    //std::cout<<"saving..."<<std::endl;
+    if (doc.save())
+        std::cout<<"Successfully wrote file "<<filename<<std::endl;
+    else
+        std::cout<<"! - Failed to write to file "<<filename<<std::endl;
 }
 
 #endif //WORKBENCH_TREESVG_H

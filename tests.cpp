@@ -28,9 +28,7 @@ void testBalanceManyElements(int elements) {
     for(int i = 0; i < elements; ++i)
     {
         root->add(i);
-        root->drawTree("balancerun" + std::to_string(i));
-        for (int j = 0; j <= i; ++j)
-            root->doesNodeExist(j);
+        // root->drawTree("balancerun" + std::to_string(i));
     }
     root->drawTree("TestResultBalancing");
     root->doesNodeExist(19);
