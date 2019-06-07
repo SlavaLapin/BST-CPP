@@ -141,7 +141,7 @@ class Node
 
     void balance()
     {
-        cout<<"Not pretending now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
+        cout<<"Checking balance now, value: "<<this->value_<<", wl: "<<this->weightLeft<<", wr: "<<this->weightRight<<endl;
         if( (weightLeft + 1)  > ((weightRight + 1) * DELTA) ) //left-heavy
         {
             if ( ((this->left->weightLeft + 1) * GAMMA) < (this->left->weightRight + 1) )
@@ -228,7 +228,7 @@ class Node
         this->left = this->right;
         int tmp_w = this->weightLeft;
         this->weightLeft = this->weightRight;
-        if (this->left != NULL) this->left->weightRight = pivot->weightLeft;
+        //if (this->left != NULL) this->left->weightRight = pivot->weightLeft;
 
         // 3
         this->right = pivot->right;
@@ -242,7 +242,7 @@ class Node
 
         // 5
         pivot->left = oldRootLeftChild;
-        if (pivot->left != NULL){ pivot->left->parent = pivot; this->weightRight+=tmp_w;} // not NULL safe
+        if (pivot->left != NULL){ pivot->left->parent = pivot; this->weightLeft+=tmp_w;} // not NULL safe
         pivot->weightLeft = tmp_w;
 
     }
@@ -265,7 +265,7 @@ class Node
         this->right = this->left;
         int tmp_w = this->weightRight;
         this->weightRight = this->weightLeft;
-        if (this->right != NULL) this->right->weightLeft = pivot->weightRight;
+        //if (this->right != NULL) this->right->weightLeft = pivot->weightRight;
 
         // 3
         this->left = pivot->left;
@@ -279,20 +279,20 @@ class Node
 
         // 5
         pivot->right = oldRootRightChild;
-        if (pivot->right != NULL){ pivot->right->parent = pivot; this->weightLeft+=tmp_w;} // not NULL safe
+        if (pivot->right != NULL){ pivot->right->parent = pivot; this->weightRight+=tmp_w;} // not NULL safe
         pivot->weightRight = tmp_w;
     }
 
     void rotateLR()
     {
-        //cout<<"LR rot";
+        cout<<"LR rot";
         this->right->rotateRight();
         this->rotateLeft();
     }
 
     void rotateRL()
     {
-        //cout<<"RL rot";
+        cout<<"RL rot";
         this->left->rotateLeft();
         this->rotateRight();
     }
@@ -483,11 +483,11 @@ public:
         if(data == NULL){ std::cout<<"An empty tree cannot be drawn"<<std::endl; return; }
 
         drawTreeDEBUG(data);
-        //drawTreeSVG(data, filename);
+        drawTreeSVG(data, filename);
         //std::cout<<"Drawing done. Deleting data"<<std::endl;
 
         delete data;
-        std::cout<<"SVG created successfully."<<std::endl;
+        std::cout<<"Drawn."<<std::endl;
     }
 
 };
